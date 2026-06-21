@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// USUÁRIOS E AUTENTICAÇÃO (B2C e B2B / Admin)
+// ==========================================
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  passwordHash  String?
+  role          Role      @default(CUSTOMER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  orders        Order[]
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  MANAGER
+  STOCK_OPERATOR
+}
+
+// ==========================================
+// CATÁLOGO DE PRODUTOS E CATEGORIAS
+// ==========================================
+model Category {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  
+  products    Product[]
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String
+  price       Decimal   @db.Decimal(10, 2)
+  categoryId  String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  category    Category  @relation(fields: [categoryId], references: [id])
+  orderItems  OrderItem[]
+  pieces      SerialPiece[] // Se for um computador montado, pode ter peças vinculadas
+}
+
+// ==========================================
+// RASTREABILIDADE DE PEÇAS (Heurística: Visibilidade de status e correspondência com mundo real)
+// ==========================================
+model SerialPiece {
+  id            String    @id @default(uuid())
+  serialNumber  String    @unique // SN Lida pelo leitor de código de barras
+  internalCode  String?
+  name          String
+  type          PieceType // SSD, RAM, CPU, etc
+  productId     String?   // ID do produto final montado onde esta peça foi alocada (se houver)
+  status        PieceStatus @default(IN_STOCK)
+  createdAt     DateTime  @default(now())
+
+  product       Product?  @relation(fields: [productId], references: [id])
+}
+
+enum PieceType {
+  SSD
+  M2
+  RAM
+  CPU
+  MOTHERBOARD
+  GPU
+  PSU
+  OTHER
+}
+
+enum PieceStatus {
+  IN_STOCK
+  SEPARATED
+  MOUNTED
+  SOLD
+  RMA
+}
+
+// ==========================================
+// VENDAS (E-commerce e ERP)
+// ==========================================
+model Order {
+  id          String      @id @default(uuid())
+  userId      String
+  totalAmount Decimal     @db.Decimal(10, 2)
+  status      OrderStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user        User        @relation(fields: [userId], references: [id])
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2)
+
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
