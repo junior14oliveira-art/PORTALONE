@@ -199,9 +199,9 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                 </p>
                 <div className="pt-8">
                    {/* Full width feature image mockup */}
-                   <div className="w-full h-64 md:h-96 bg-gradient-to-tr from-slate-900 to-slate-800 rounded-2xl flex items-center justify-center border border-white/10 shadow-2xl relative overflow-hidden group">
-                     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541807084-5c52b6b3adef?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-40 mix-blend-luminosity group-hover:opacity-50 transition-opacity duration-700"></div>
-                     <h3 className="text-4xl font-extrabold text-white z-10 tracking-widest drop-shadow-lg">PRECISION</h3>
+                   <div className="w-full h-64 md:h-96 bg-slate-50 rounded-3xl flex items-center justify-center border border-border shadow-sm relative overflow-hidden group">
+                     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541807084-5c52b6b3adef?q=80&w=1000&auto=format&fit=crop')] bg-cover bg-center opacity-80 mix-blend-multiply group-hover:scale-105 transition-transform duration-1000"></div>
+                     <h3 className="text-4xl md:text-6xl font-extrabold text-white z-10 tracking-widest drop-shadow-2xl">PRECISION</h3>
                    </div>
                 </div>
               </div>
