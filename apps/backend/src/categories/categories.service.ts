@@ -23,4 +23,17 @@ export class CategoriesService {
       data,
     });
   }
+
+  async update(id: string, data: any): Promise<Category> {
+    return prisma.category.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async remove(id: string): Promise<Category> {
+    return prisma.category.delete({
+      where: { id },
+    });
+  }
 }

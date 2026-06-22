@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 // ==========================================
@@ -15,18 +15,11 @@ model User {
   name          String
   email         String    @unique
   passwordHash  String?
-  role          Role      @default(CUSTOMER)
+  role          String    @default("CUSTOMER") // Role: CUSTOMER, ADMIN, MANAGER, STOCK_OPERATOR
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
   orders        Order[]
-}
-
-enum Role {
-  CUSTOMER
-  ADMIN
-  MANAGER
-  STOCK_OPERATOR
 }
 
 // ==========================================
@@ -46,7 +39,7 @@ model Product {
   name        String
   slug        String    @unique
   description String
-  price       Decimal   @db.Decimal(10, 2)
+  price       Float     // Convertido de Decimal para Float para compatibilidade com SQLite
   categoryId  String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -57,38 +50,19 @@ model Product {
 }
 
 // ==========================================
-// RASTREABILIDADE DE PEÇAS (Heurística: Visibilidade de status e correspondência com mundo real)
+// RASTREABILIDADE DE PEÇAS 
 // ==========================================
 model SerialPiece {
   id            String    @id @default(uuid())
   serialNumber  String    @unique // SN Lida pelo leitor de código de barras
   internalCode  String?
   name          String
-  type          PieceType // SSD, RAM, CPU, etc
+  type          String    // PieceType: SSD, M2, RAM, CPU, MOTHERBOARD, GPU, PSU, OTHER
   productId     String?   // ID do produto final montado onde esta peça foi alocada (se houver)
-  status        PieceStatus @default(IN_STOCK)
+  status        String    @default("IN_STOCK") // PieceStatus: IN_STOCK, SEPARATED, MOUNTED, SOLD, RMA
   createdAt     DateTime  @default(now())
 
   product       Product?  @relation(fields: [productId], references: [id])
-}
-
-enum PieceType {
-  SSD
-  M2
-  RAM
-  CPU
-  MOTHERBOARD
-  GPU
-  PSU
-  OTHER
-}
-
-enum PieceStatus {
-  IN_STOCK
-  SEPARATED
-  MOUNTED
-  SOLD
-  RMA
 }
 
 // ==========================================
@@ -97,8 +71,8 @@ enum PieceStatus {
 model Order {
   id          String      @id @default(uuid())
   userId      String
-  totalAmount Decimal     @db.Decimal(10, 2)
-  status      OrderStatus @default(PENDING)
+  totalAmount Float       // Convertido para Float
+  status      String      @default("PENDING") // OrderStatus: PENDING, PAID, PROCESSING, SHIPPED, DELIVERED, CANCELED
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
@@ -111,17 +85,8 @@ model OrderItem {
   orderId   String
   productId String
   quantity  Int
-  price     Decimal @db.Decimal(10, 2)
+  price     Float   // Convertido para Float
 
   order     Order   @relation(fields: [orderId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
-}
-
-enum OrderStatus {
-  PENDING
-  PAID
-  PROCESSING
-  SHIPPED
-  DELIVERED
-  CANCELED
 }

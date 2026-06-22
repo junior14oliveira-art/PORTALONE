@@ -23,4 +23,17 @@ export class ProductsService {
       data,
     });
   }
+
+  async update(id: string, data: any): Promise<Product> {
+    return prisma.product.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async remove(id: string): Promise<Product> {
+    return prisma.product.delete({
+      where: { id },
+    });
+  }
 }

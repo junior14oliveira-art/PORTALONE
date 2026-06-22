@@ -1,16 +1,11 @@
-import type { Metadata } from 'next';
 import './globals.css';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'PORTALONE - 4M&C Informática',
   description: 'Compre computadores, notebooks e servidores de alta performance.',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR" suppressHydrationWarning className="bg-background text-foreground">
       <body className={`font-sans antialiased min-h-screen flex flex-col`}>

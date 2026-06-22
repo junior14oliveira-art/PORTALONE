@@ -1,4 +1,4 @@
-import { HOME_CONTENT } from '@/config/home-content';
+import { HOME_CONTENT } from '../config/home-content';
 
 export default function Home() {
   return (
