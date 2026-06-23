@@ -392,7 +392,7 @@ export default function ProdutosPage() {
   const syncAPI = async () => {
     setSyncing(true);
     try {
-      const res = await fetch('https://fourmc-market-api.onrender.com/api/public/produtos');
+      const res = await fetch('/api/produtos/sync');
       const data = await res.json();
       if (data && data.success && data.produtos) {
         // Find products that are not yet imported
