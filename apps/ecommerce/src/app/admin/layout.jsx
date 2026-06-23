@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useEditor } from '@/context/EditorContext';
 
 const NAV_LINKS = [
   {
@@ -61,6 +62,7 @@ const NAV_LINKS = [
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { enterEditor } = useEditor();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(null);
 
