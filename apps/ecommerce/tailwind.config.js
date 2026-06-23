@@ -11,8 +11,8 @@ module.exports = {
         background: '#F7F8FA',
         foreground: '#202020',
         brand: {
-          DEFAULT: '#0052B4',
-          hover: '#003F8A',
+          DEFAULT: '#20AAA0',
+          hover: '#198f86',
         },
         'nav-bg': '#ffffff',
         border: '#E2E8F0',
