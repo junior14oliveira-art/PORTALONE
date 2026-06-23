@@ -7,6 +7,7 @@ import { useToast } from '@/components/Toast';
 import { useEditor } from '@/context/EditorContext';
 import { BannerEditorPanel } from '@/components/editor/BannerEditorPanel';
 import { EditableText } from '@/components/editor/EditableText';
+import { EditableImage } from '@/components/editor/EditableImage';
 
 /* ─── Hero Carousel Data ──────────────────────────────────────────────────── */
 const HERO_SLIDES = [
@@ -308,7 +309,7 @@ export default function Home() {
         <div className="w-full bg-white border border-border rounded-xl px-6 py-4 flex items-center justify-between mb-10 shadow-sm">
           <div className="flex items-center gap-3 text-brand">
              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>
-             <h2 className="font-bold tracking-wide uppercase text-foreground">O que você procura hoje?</h2>
+             <EditableText id="sec_cat_title" field="title" defaults={{title: 'O que você procura hoje?'}} tag="h2" className="font-bold tracking-wide uppercase text-foreground" />
           </div>
           <div className="hidden sm:flex items-center gap-2 text-brand cursor-pointer hover:underline">
              <span className="font-bold text-sm">Ver todas as categorias</span>
@@ -321,9 +322,9 @@ export default function Home() {
           {HOME_CONTENT.categories.map((cat, i) => (
             <div key={i} className="flex flex-col items-center cursor-pointer group">
               <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 border border-border group-hover:border-brand group-hover:shadow-md transition-all overflow-hidden p-4">
-                <img src={cat.img} alt={cat.name} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform" />
+                <EditableImage id={`cat_${i}`} field="img" defaults={cat} className="w-full h-full" imgClassName="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform" />
               </div>
-              <span className="text-sm text-foreground font-medium group-hover:text-brand text-center w-28">{cat.name}</span>
+              <EditableText id={`cat_${i}`} field="name" defaults={cat} tag="span" className="text-sm text-foreground font-medium group-hover:text-brand text-center w-28 block" />
             </div>
           ))}
         </div>
@@ -338,8 +339,8 @@ export default function Home() {
               
               <div className="relative z-10">
                 <div className="w-12 h-1 bg-white mb-6 rounded-full"></div>
-                <h2 className="text-3xl lg:text-4xl font-black uppercase leading-tight mb-4">Recomendados<br/>Para Você</h2>
-                <p className="text-white/90 text-sm opacity-90">Seleção exclusiva baseada no seu perfil corporativo.</p>
+                <EditableText id="sec_rec_title" field="title" defaults={{title: 'Recomendados\nPara Você'}} tag="h2" className="text-3xl lg:text-4xl font-black uppercase leading-tight mb-4 whitespace-pre-line" />
+                <EditableText id="sec_rec_sub" field="sub" defaults={{sub: 'Seleção exclusiva baseada no seu perfil corporativo.'}} tag="p" className="text-white/90 text-sm opacity-90" />
                 <button className="mt-8 border border-white/30 hover:bg-white hover:text-brand px-6 py-2 rounded-full text-sm font-bold transition-colors w-fit">
                   Ver Mais
                 </button>
@@ -359,11 +360,11 @@ export default function Home() {
                         </div>
                      </div>
                      <div className="h-44 w-full flex items-center justify-center mb-4 p-4">
-                        <img src={prod.img} alt={prod.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform" />
+                        <EditableImage id={`rec_${i}`} field="img" defaults={prod} className="w-full h-full" imgClassName="w-full h-full object-contain group-hover:scale-105 transition-transform" />
                      </div>
-                     <h3 className="text-sm text-foreground font-medium mb-4 line-clamp-2 h-[40px] group-hover:text-brand transition-colors">{prod.name}</h3>
+                     <EditableText id={`rec_${i}`} field="name" defaults={prod} tag="h3" className="text-sm text-foreground font-medium mb-4 line-clamp-2 h-[40px] group-hover:text-brand transition-colors" />
                       <div className="mt-auto border-t border-border pt-4 relative">
-                        <div className="text-xl font-black text-[#25D366]">R$ {prod.price} <span className="text-xs font-bold text-[#25D366]">no PIX</span></div>
+                        <div className="text-xl font-black text-[#25D366]">R$ <EditableText id={`rec_${i}`} field="price" defaults={prod} /> <span className="text-xs font-bold text-[#25D366]">no PIX</span></div>
                         <div className="text-xs text-muted mt-1">ou 10x sem juros</div>
                         {!prod.estoque && (
                           <button
@@ -386,30 +387,30 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
            <div className="bg-foreground rounded-2xl overflow-hidden relative shadow-lg flex items-end p-8 h-[350px] group cursor-pointer">
               <div className="absolute top-6 left-6 z-10 font-bold text-white text-3xl opacity-20">DELL</div>
-              <img src={HOME_CONTENT.bannersMosaico.notebookBg} alt="Notebook Banner" className="absolute right-[-5%] bottom-0 w-[80%] h-auto object-contain z-0 mix-blend-luminosity opacity-60 group-hover:scale-105 transition-transform duration-700" />
+              <EditableImage id="mosaic_1" field="notebookBg" defaults={HOME_CONTENT.bannersMosaico} className="absolute right-[-5%] bottom-0 w-[80%] h-auto z-0" imgClassName="w-full h-full object-contain mix-blend-luminosity opacity-60 group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute left-0 bottom-0 w-full p-8 text-white text-left bg-gradient-to-t from-black/80 to-transparent z-10">
-                 <h3 className="font-medium text-brand text-sm tracking-widest uppercase mb-1">Destaque Corporativo</h3>
-                 <h2 className="font-black text-3xl mb-4">LATITUDE 5420</h2>
+                 <EditableText id="mosaic_1_sub" field="sub" defaults={{sub: 'Destaque Corporativo'}} tag="h3" className="font-medium text-brand text-sm tracking-widest uppercase mb-1" />
+                 <EditableText id="mosaic_1_title" field="title" defaults={{title: 'LATITUDE 5420'}} tag="h2" className="font-black text-3xl mb-4" />
                  <span className="inline-block bg-brand text-white px-4 py-2 rounded text-sm font-bold hover:bg-white hover:text-brand transition-colors">Conferir</span>
               </div>
            </div>
            
            <div className="flex flex-col gap-6 h-[350px]">
               <div className="bg-white border border-border rounded-2xl overflow-hidden relative shadow-sm hover:shadow-md transition-shadow flex-1 flex items-center justify-center p-6 group cursor-pointer">
-                 <img src={HOME_CONTENT.bannersMosaico.monitor} alt="Monitor Banner" className="w-[45%] absolute right-6 z-0 object-contain group-hover:scale-105 transition-transform" />
+                 <EditableImage id="mosaic_2" field="monitor" defaults={HOME_CONTENT.bannersMosaico} className="w-[45%] absolute right-6 z-0" imgClassName="w-full h-full object-contain group-hover:scale-105 transition-transform" />
                  <div className="absolute left-8 z-10">
-                    <h3 className="text-muted font-medium text-sm tracking-wider uppercase mb-1">Monitores</h3>
-                    <h2 className="text-foreground font-black text-2xl mb-2">P2422H</h2>
-                    <p className="text-sm text-brand font-bold">Resolução Full HD</p>
+                    <EditableText id="mosaic_2_sub" field="sub" defaults={{sub: 'Monitores'}} tag="h3" className="text-muted font-medium text-sm tracking-wider uppercase mb-1" />
+                    <EditableText id="mosaic_2_title" field="title" defaults={{title: 'P2422H'}} tag="h2" className="text-foreground font-black text-2xl mb-2" />
+                    <EditableText id="mosaic_2_desc" field="desc" defaults={{desc: 'Resolução Full HD'}} tag="p" className="text-sm text-brand font-bold" />
                  </div>
               </div>
               
               <div className="bg-brand rounded-2xl overflow-hidden relative shadow-sm hover:shadow-md transition-shadow h-[140px] flex items-center p-6 group cursor-pointer">
                  <div className="z-10 w-1/2">
-                    <h3 className="text-white/80 font-medium text-xs tracking-wider uppercase mb-1">Redes</h3>
-                    <h2 className="text-white font-black text-xl leading-tight">Switch Dell<br/>S4048-ON</h2>
+                    <EditableText id="mosaic_3_sub" field="sub" defaults={{sub: 'Redes'}} tag="h3" className="text-white/80 font-medium text-xs tracking-wider uppercase mb-1" />
+                    <EditableText id="mosaic_3_title" field="title" defaults={{title: 'Switch Dell\nS4048-ON'}} tag="h2" className="text-white font-black text-xl leading-tight whitespace-pre-line" />
                  </div>
-                 <img src={HOME_CONTENT.bannersMosaico.switch} alt="Switch Banner" className="w-[55%] absolute right-[-5%] z-0 object-contain mix-blend-luminosity opacity-80 group-hover:scale-105 transition-transform" />
+                 <EditableImage id="mosaic_3" field="switch" defaults={HOME_CONTENT.bannersMosaico} className="w-[55%] absolute right-[-5%] z-0" imgClassName="w-full h-full object-contain mix-blend-luminosity opacity-80 group-hover:scale-105 transition-transform" />
               </div>
            </div>
         </div>
@@ -418,7 +419,7 @@ export default function Home() {
         <div className="w-full bg-white border border-border rounded-xl px-6 py-4 flex items-center justify-between mb-8 shadow-sm">
           <div className="flex items-center gap-3">
              <div className="w-2 h-6 bg-brand rounded-full"></div>
-             <h2 className="font-bold tracking-wide uppercase text-foreground">Destaques da Semana</h2>
+             <EditableText id="sec_hype_title" field="title" defaults={{title: 'Destaques da Semana'}} tag="h2" className="font-bold tracking-wide uppercase text-foreground" />
           </div>
           <div className="text-sm flex items-center gap-2">
              <span className="text-muted">Aproveite as ofertas</span>
@@ -435,9 +436,9 @@ export default function Home() {
                       {item.estoque ? <span className="bg-warning text-foreground text-[10px] font-bold px-2 py-1 rounded">OFERTA</span> : <div></div>}
                    </div>
                    <div className="h-36 w-full flex items-center justify-center mb-6 p-2">
-                      <img src={item.img} alt={item.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform" />
+                      <EditableImage id={`hype_${i}`} field="img" defaults={item} className="w-full h-full" imgClassName="w-full h-full object-contain group-hover:scale-105 transition-transform" />
                    </div>
-                   <h3 className="text-sm text-foreground font-medium mb-4 line-clamp-2 h-[40px] group-hover:text-brand transition-colors">{item.name}</h3>
+                   <EditableText id={`hype_${i}`} field="name" defaults={item} tag="h3" className="text-sm text-foreground font-medium mb-4 line-clamp-2 h-[40px] group-hover:text-brand transition-colors" />
                    
                    <div className="mt-auto border-t border-border pt-4">
                       <div className="text-xs text-muted mb-1 line-through">R$ {(parseFloat(item.price.replace('.','').replace(',','.')) * 1.15).toLocaleString('pt-BR', {minimumFractionDigits:2})}</div>
