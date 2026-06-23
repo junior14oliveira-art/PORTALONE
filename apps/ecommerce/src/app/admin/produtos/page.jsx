@@ -137,8 +137,23 @@ function ConfirmModal({ product, onConfirm, onCancel }) {
   );
 }
 
-function ProductModal({ product, onSave, onClose }) {
+function ProductModal({ product, models, onSave, onClose }) {
   const [form, setForm] = useState(product ? { ...product } : { ...EMPTY_FORM });
+
+  const handleModelSelect = (e) => {
+    const modelId = parseInt(e.target.value, 10);
+    const model = models?.find(m => m.id === modelId);
+    if (model) {
+      setForm(prev => ({
+        ...prev,
+        name: model.modelName || '',
+        category: model.category || '',
+        image: model.image || '',
+        price: model.price || '',
+        description: model.description || '',
+      }));
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -168,6 +183,17 @@ function ProductModal({ product, onSave, onClose }) {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          {/* Selecionar Modelo (Apenas para Novos) */}
+          {!product && models && models.length > 0 && (
+            <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100 mb-6">
+              <label className="block text-xs font-semibold text-[#0052B4] mb-1.5 uppercase tracking-wide">Usar Modelo Predefinido</label>
+              <select onChange={handleModelSelect} className="w-full border border-blue-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-[#0052B4]">
+                <option value="">Preencher manualmente...</option>
+                {models.map(m => <option key={m.id} value={m.id}>{m.modelName}</option>)}
+              </select>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Nome */}
             <div className="sm:col-span-2">
@@ -319,11 +345,22 @@ function ProductModal({ product, onSave, onClose }) {
 
 export default function ProdutosPage() {
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
+  const [models, setModels] = useState([]);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [toast, setToast] = useState(null);
+  const [syncing, setSyncing] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('ecommerce_models');
+    if (saved) {
+      try {
+        setModels(JSON.parse(saved));
+      } catch (e) {}
+    }
+  }, []);
 
   const filtered = products.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -351,6 +388,46 @@ export default function ProdutosPage() {
     setToast('Produto excluído com sucesso!');
   };
 
+  const syncAPI = async () => {
+    setSyncing(true);
+    try {
+      const res = await fetch('https://fourmc-market-api.onrender.com/api/public/produtos');
+      const data = await res.json();
+      if (data && data.success && data.produtos) {
+        // Find products that are not yet imported
+        const newProducts = [];
+        data.produtos.forEach(p => {
+          // Check if SKU (id_unico) already exists
+          const exists = products.find(existing => existing.sku === p.id_unico);
+          if (!exists) {
+            newProducts.push({
+              id: p.id_unico,
+              name: p.nome_exibicao || p.modelo,
+              sku: p.id_unico,
+              category: CATEGORIES.includes(p.categoria) ? p.categoria : CATEGORIES[0], // fallback to first category
+              price: parseFloat(p.preco || 0),
+              pricePromo: '',
+              stock: p.quantidade_disponivel || 0,
+              description: `Marca: ${p.marca} | Processador: ${p.processador} | Geração: ${p.geracao}`,
+              image: '',
+              status: 'Inativo' // Adds as Inativo by default
+            });
+          }
+        });
+        if (newProducts.length > 0) {
+          setProducts(prev => [...prev, ...newProducts]);
+          setToast(`${newProducts.length} produtos importados do estoque!`);
+        } else {
+          setToast('Nenhum produto novo para importar.');
+        }
+      }
+    } catch (e) {
+      setToast('Erro ao sincronizar com estoque.');
+    } finally {
+      setSyncing(false);
+    }
+  };
+
   const openEdit = (product) => {
     setEditProduct(product);
     setModalOpen(true);
@@ -369,15 +446,33 @@ export default function ProdutosPage() {
           <h2 className="text-2xl font-bold text-gray-900">Produtos</h2>
           <p className="text-gray-500 text-sm mt-1">{products.length} produtos cadastrados</p>
         </div>
-        <button
-          onClick={openNew}
-          className="flex items-center gap-2 bg-[#0052B4] hover:bg-[#003d8a] text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors shadow-md shadow-blue-200"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          Novo Produto
-        </button>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button
+            onClick={syncAPI}
+            disabled={syncing}
+            className="flex items-center justify-center gap-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors disabled:opacity-50"
+          >
+            {syncing ? (
+              <svg className="animate-spin w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 text-[#23A79D]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            )}
+            Sincronizar Estoque
+          </button>
+          <button
+            onClick={openNew}
+            className="flex items-center justify-center gap-2 bg-[#0052B4] hover:bg-[#003d8a] text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors shadow-md shadow-blue-200"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Novo Produto
+          </button>
+        </div>
       </div>
 
       {/* Search + Filters */}
@@ -495,6 +590,7 @@ export default function ProdutosPage() {
       {modalOpen && (
         <ProductModal
           product={editProduct}
+          models={models}
           onSave={handleSave}
           onClose={() => { setModalOpen(false); setEditProduct(null); }}
         />
