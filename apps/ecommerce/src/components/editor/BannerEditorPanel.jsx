@@ -14,6 +14,8 @@ export function BannerEditorPanel({ slideId, slideData, onUpdate, onClose }) {
     sub:       slideData.sub ?? '',
     cta:       slideData.cta ?? '',
     bgColor:   slideData.bgColor ?? '#0052B4',
+    image:     slideData.image ?? '',
+    showLaptop: slideData.showLaptop ?? true,
   });
 
   const set = (key) => (val) => {
@@ -24,6 +26,8 @@ export function BannerEditorPanel({ slideId, slideData, onUpdate, onClose }) {
       sub:      key === 'sub'      ? val : form.sub,
       cta:      key === 'cta'      ? val : form.cta,
       bgColor:  key === 'bgColor'  ? val : form.bgColor,
+      image:    key === 'image'    ? val : form.image,
+      showLaptop: key === 'showLaptop' ? val : form.showLaptop,
     });
   };
 
@@ -51,6 +55,22 @@ export function BannerEditorPanel({ slideId, slideData, onUpdate, onClose }) {
         <Field label="Subtítulo" value={form.sub} onChange={set('sub')} />
         {/* CTA */}
         <Field label="Botão CTA" value={form.cta} onChange={set('cta')} />
+        {/* Imagem */}
+        <div className="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10">
+          <input
+            type="checkbox"
+            id="showLaptop"
+            checked={form.showLaptop}
+            onChange={e => set('showLaptop')(e.target.checked)}
+            className="w-4 h-4 cursor-pointer accent-[#23A79D]"
+          />
+          <label htmlFor="showLaptop" className="text-white/80 text-xs font-semibold uppercase tracking-wide cursor-pointer flex-1">
+            Exibir Imagem Principal
+          </label>
+        </div>
+        {form.showLaptop && (
+          <Field label="URL da Imagem" value={form.image} onChange={set('image')} />
+        )}
 
         {/* Cor de fundo */}
         <div className="flex flex-col gap-2">

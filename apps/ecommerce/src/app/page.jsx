@@ -132,7 +132,7 @@ function HeroCarousel() {
         {slide.showLaptop && (
           <div className="absolute left-10 md:left-20 bottom-0 z-20 w-[30%] md:w-[400px] h-[90%] flex items-end">
             <img
-              src={HOME_CONTENT.hero.laptopImage}
+              src={slide.image || HOME_CONTENT.hero.laptopImage}
               alt="Notebook em destaque"
               className="w-full h-auto object-contain drop-shadow-2xl mix-blend-luminosity opacity-95 transition-transform hover:scale-105 duration-700"
             />
