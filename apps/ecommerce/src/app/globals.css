@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@source "../../";
+/* cache bust v2 */
 
 @custom-variant dark (&:is(.dark *));
 
