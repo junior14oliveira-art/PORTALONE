@@ -4,7 +4,7 @@ export function Logo({ className = "w-48 h-auto" }) {
   return (
     <svg 
       className={className} 
-      viewBox="0 0 500 150" 
+      viewBox="0 0 600 150" 
       fill="none" 
       xmlns="http://www.w3.org/2000/svg"
     >
