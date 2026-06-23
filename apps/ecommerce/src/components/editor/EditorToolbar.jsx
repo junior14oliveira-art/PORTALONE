@@ -2,11 +2,14 @@
 
 import { useEditor } from '@/context/EditorContext';
 import { useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 
 export function EditorToolbar() {
   const { editorMode, exitEditor, saveAll, resetAll, hasUnsaved, selectedElement, clearSelection } = useEditor();
   const [saving, setSaving] = useState(false);
   const [saved,  setSaved]  = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   if (!editorMode) return null;
 
@@ -33,9 +36,24 @@ export function EditorToolbar() {
         </div>
 
         {/* Hint */}
-        <p className="text-white/50 text-xs hidden sm:block">
+        <p className="text-white/50 text-xs hidden lg:block">
           {selectedElement ? `Editando: ${selectedElement.label}` : 'Clique em qualquer elemento para editar'}
         </p>
+
+        {/* Page Selector */}
+        <div className="hidden md:flex items-center gap-2 ml-4">
+          <span className="text-white/50 text-xs">Página:</span>
+          <select 
+            value={pathname} 
+            onChange={e => router.push(e.target.value)}
+            className="bg-white/10 hover:bg-white/20 border border-white/20 rounded-md px-2 py-1 text-white text-xs focus:outline-none focus:ring-1 focus:ring-[#23A79D] cursor-pointer transition-colors"
+          >
+            <option value="/" className="text-black">Página Inicial</option>
+            <option value="/catalogo" className="text-black">Catálogo</option>
+            <option value="/carrinho" className="text-black">Carrinho</option>
+            <option value="/checkout" className="text-black">Checkout</option>
+          </select>
+        </div>
 
         <div className="ml-auto flex items-center gap-2">
           {/* Desfazer seleção */}
