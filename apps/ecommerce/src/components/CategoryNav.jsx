@@ -40,7 +40,7 @@ export function CategoryNav() {
   }, []);
 
   return (
-    <nav className="bg-white border-b border-border text-foreground text-sm shadow-sm relative z-20">
+    <nav className="bg-white border-b border-border text-foreground text-sm shadow-sm relative z-[100]">
       <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between py-2.5 overflow-x-auto hide-scrollbar whitespace-nowrap">
         <div className="flex items-center gap-6 font-medium">
 
@@ -54,22 +54,23 @@ export function CategoryNav() {
               aria-haspopup="listbox"
               aria-expanded={open}
             >
-              {/* Ícone hamburger/X animado */}
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="flex-shrink-0">
-                {open ? (
-                  <path d="M18 6L6 18M6 6l12 12" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
-                ) : (
-                  <>
-                    <rect x="2" y="4" width="20" height="3" rx="1.5" />
-                    <rect x="2" y="10.5" width="20" height="3" rx="1.5" />
-                    <rect x="2" y="17" width="20" height="3" rx="1.5" />
-                  </>
-                )}
-              </svg>
+              {/* Ícone hamburger / X — SVGs separados para evitar conflito de fill */}
+              {open ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" className="flex-shrink-0">
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white" className="flex-shrink-0">
+                  <rect x="2" y="4" width="20" height="3" rx="1.5" />
+                  <rect x="2" y="10.5" width="20" height="3" rx="1.5" />
+                  <rect x="2" y="17" width="20" height="3" rx="1.5" />
+                </svg>
+              )}
               CATEGORIAS
               <svg
                 width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
+                stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
                 style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}
               >
                 <path d="M6 9l6 6 6-6" />
@@ -78,7 +79,7 @@ export function CategoryNav() {
 
             {/* Dropdown Menu */}
             {open && (
-              <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-border z-50 overflow-hidden">
+              <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-border z-[200] overflow-hidden">
                 <div className="bg-[#1a1a2e] px-4 py-3">
                   <p className="text-white/70 text-[10px] uppercase tracking-widest font-bold">Todas as Categorias</p>
                 </div>
