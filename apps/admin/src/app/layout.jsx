@@ -1,4 +1,4 @@
-﻿import './globals.css';
+import './globals.css';
 
 export const metadata = {
   title: 'Admin PORTALONE',
@@ -29,6 +29,7 @@ export default function RootLayout({ children }) {
 function AdminSidebar() {
   const navItems = [
     { href: '/', label: 'Dashboard', icon: IconDashboard },
+    { href: '/editor', label: 'Editor Visual (Site)', icon: IconEditor },
     { href: '/products', label: 'Produtos', icon: IconProducts },
     { href: '/categories', label: 'Categorias', icon: IconCategories },
     { href: '/orders', label: 'Pedidos', icon: IconOrders },
@@ -173,6 +174,15 @@ function AdminHeader() {
 }
 
 /* ---- INLINE SVG ICONS ---- */
+function IconEditor({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m12 19-7-7 7-7" />
+      <path d="M19 12H5" />
+      <path d="M12 19l7-7-7-7" />
+    </svg>
+  );
+}
 function IconDashboard({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

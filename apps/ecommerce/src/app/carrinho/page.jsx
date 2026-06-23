@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -6,9 +6,9 @@ import Link from 'next/link';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 const INITIAL_ITEMS = [
-  { id: 1, name: 'Dell Latitude 5420 — Intel Core i7, 16GB RAM, SSD 512GB', sku: 'DL-LAT5420-I7', price: 7499.90, quantity: 1, category: 'Notebooks' },
-  { id: 2, name: 'Monitor Dell P2422H — Full HD 24" IPS, DisplayPort, HDMI', sku: 'DL-P2422H', price: 1890.00, quantity: 2, category: 'Monitores' },
-  { id: 3, name: 'Switch Dell Networking S4048-ON — 48 portas SFP+', sku: 'DL-S4048ON', price: 12350.00, quantity: 1, category: 'Redes' },
+  { id: 1, name: 'Dell Latitude 5420 — Intel Core i7, 16GB RAM, SSD 512GB', sku: 'DL-LAT5420-I7', price: 7499.90, quantity: 1, category: 'Notebooks', img: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=400&auto=format&fit=crop' },
+  { id: 2, name: 'Monitor Dell P2422H — Full HD 24" IPS, DisplayPort, HDMI', sku: 'DL-P2422H', price: 1890.00, quantity: 2, category: 'Monitores', img: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=400&auto=format&fit=crop' },
+  { id: 3, name: 'Switch Dell Networking S4048-ON — 48 portas SFP+', sku: 'DL-S4048ON', price: 12350.00, quantity: 1, category: 'Redes', img: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=400&auto=format&fit=crop' },
 ];
 
 const SHIPPING_OPTIONS_MOCK = [
@@ -91,13 +91,8 @@ export default function CarrinhoPage() {
               {items.map((item, idx) => (
                 <div key={item.id} className="bg-white rounded-2xl border border-border shadow-sm p-5 flex gap-5 items-start group hover:border-brand/30 hover:shadow-md transition-all"
                   style={{ opacity: removingId === item.id ? 0 : 1, transform: removingId === item.id ? 'translateX(60px)' : 'translateX(0)', transition: 'opacity 0.35s ease, transform 0.35s ease' }}>
-                  <div className="w-28 h-28 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner"
-                    style={{ background: `linear-gradient(135deg, ${COLORS[idx % 3]}22, ${COLORS[idx % 3]}55)` }}>
-                    <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ background: COLORS[idx % 3] }}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect width="18" height="12" x="3" y="4" rx="2"/><line x1="2" x2="22" y1="20" y2="20"/>
-                      </svg>
-                    </div>
+                  <div className="w-28 h-28 rounded-xl flex items-center justify-center flex-shrink-0 bg-white border border-border/50 overflow-hidden">
+                    <img src={item.img} alt={item.name} className="w-full h-full object-contain p-2 hover:scale-110 transition-transform duration-300" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">

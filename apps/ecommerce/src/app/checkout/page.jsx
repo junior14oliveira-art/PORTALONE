@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -18,9 +18,9 @@ const SHIPPING_MOCK = [
 ];
 
 const CART_ITEMS = [
-  { id: 1, name: 'Dell Latitude 5420 — i7, 16GB, SSD 512GB', price: 7499.90, qty: 1 },
-  { id: 2, name: 'Monitor Dell P2422H — 24" Full HD', price: 1890.00, qty: 2 },
-  { id: 3, name: 'Switch Dell S4048-ON — 48p SFP+', price: 12350.00, qty: 1 },
+  { id: 1, name: 'Dell Latitude 5420 — i7, 16GB, SSD 512GB', price: 7499.90, qty: 1, img: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=200&auto=format&fit=crop' },
+  { id: 2, name: 'Monitor Dell P2422H — 24" Full HD', price: 1890.00, qty: 2, img: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=200&auto=format&fit=crop' },
+  { id: 3, name: 'Switch Dell S4048-ON — 48p SFP+', price: 12350.00, qty: 1, img: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=200&auto=format&fit=crop' },
 ];
 
 function formatBRL(v) { return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
@@ -393,20 +393,25 @@ function OrderSidebar({ shipping }) {
       <div className="bg-gradient-to-r from-brand to-brand-hover p-5">
         <h3 className="text-white font-black">Seu Pedido</h3>
       </div>
-      <div className="p-5 flex flex-col gap-3">
+      <div className="p-5 flex flex-col gap-4">
         {CART_ITEMS.map(item => (
-          <div key={item.id} className="flex items-start justify-between gap-2 text-sm">
-            <div className="flex items-start gap-2">
-              <span className="bg-brand text-white text-xs font-bold px-1.5 py-0.5 rounded">{item.qty}×</span>
-              <p className="text-foreground font-medium leading-tight line-clamp-2">{item.name}</p>
+          <div key={item.id} className="flex items-start justify-between gap-3 text-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-muted-bg rounded-lg border border-border p-1 flex-shrink-0">
+                <img src={item.img} alt={item.name} className="w-full h-full object-contain" />
+              </div>
+              <div className="flex flex-col">
+                <p className="text-foreground font-medium leading-tight line-clamp-2">{item.name}</p>
+                <span className="text-muted text-xs font-bold mt-1">Qtd: {item.qty}</span>
+              </div>
             </div>
             <p className="font-bold text-foreground flex-shrink-0">{formatBRL(item.price * item.qty)}</p>
           </div>
         ))}
-        <div className="border-t border-border pt-3 mt-1 flex flex-col gap-2">
+        <div className="border-t border-border pt-4 mt-2 flex flex-col gap-2">
           <div className="flex justify-between text-sm"><span className="text-muted">Subtotal</span><span className="font-semibold">{formatBRL(subtotal)}</span></div>
           <div className="flex justify-between text-sm"><span className="text-muted">Frete</span><span className="font-semibold">{shipping ? formatBRL(shippingCost) : '—'}</span></div>
-          <div className="flex justify-between border-t border-border pt-2 mt-1">
+          <div className="flex justify-between border-t border-border pt-3 mt-1">
             <span className="font-black text-foreground">Total</span>
             <span className="font-black text-xl text-foreground">{formatBRL(subtotal + shippingCost)}</span>
           </div>

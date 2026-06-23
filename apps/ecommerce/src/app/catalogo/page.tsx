@@ -121,25 +121,136 @@ export default function CatalogoPage() {
           {/* LISTAGEM DINÂMICA DE PRODUTOS (Grid Direita) */}
           <div className="flex-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
-                <div key={item} className="flex flex-col bg-card rounded-2xl border border-border/40 overflow-hidden hover-lift group relative">
+              {[
+                {
+                  id: 1,
+                  badge: '15% OFF',
+                  badgeType: 'destructive',
+                  brand: 'Workstation Dell',
+                  title: 'Precision 3000 Series MT Core i7 32GB RAM 1TB SSD',
+                  specs: ['Core i7-13700K', '32GB RAM DDR5', '1TB SSD NVMe'],
+                  price: '10.625,00',
+                  oldPrice: '12.500,00',
+                  installments: '10x de R$ 1.062,50 sem juros',
+                  img: 'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?q=80&w=400&auto=format&fit=crop'
+                },
+                {
+                  id: 2,
+                  badge: 'Esgotado',
+                  badgeType: 'secondary',
+                  brand: 'Notebook Lenovo',
+                  title: 'ThinkPad T14 Gen 2 Intel Core i5 16GB 512GB SSD',
+                  specs: ['Core i5-1135G7', '16GB RAM DDR4', '512GB NVMe'],
+                  price: '5.200,00',
+                  oldPrice: null,
+                  installments: '10x de R$ 520,00 sem juros',
+                  img: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=400&auto=format&fit=crop'
+                },
+                {
+                  id: 3,
+                  badge: 'Pronta Entrega',
+                  badgeType: 'success',
+                  brand: 'Servidor Dell',
+                  title: 'PowerEdge T150 Xeon E-2324G 16GB 2TB SATA',
+                  specs: ['Xeon E-2324G', '16GB UDIMM ECC', '2TB SATA 7.2K'],
+                  price: '8.450,00',
+                  oldPrice: null,
+                  installments: '10x de R$ 845,00 sem juros',
+                  img: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=400&auto=format&fit=crop'
+                },
+                {
+                  id: 4,
+                  badge: null,
+                  brand: 'Monitor Dell',
+                  title: 'P2422H 24" Full HD IPS Ajuste de Altura',
+                  specs: ['24" IPS FHD', 'Ajuste de altura', 'DisplayPort/HDMI/VGA'],
+                  price: '1.250,00',
+                  oldPrice: null,
+                  installments: '10x de R$ 125,00 sem juros',
+                  img: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=400&auto=format&fit=crop'
+                },
+                {
+                  id: 5,
+                  badge: 'Pronta Entrega',
+                  badgeType: 'success',
+                  brand: 'Computador HP',
+                  title: 'ProDesk 400 G7 SFF Core i5 8GB 256GB SSD',
+                  specs: ['Core i5-10500', '8GB RAM DDR4', '256GB NVMe'],
+                  price: '3.150,00',
+                  oldPrice: null,
+                  installments: '10x de R$ 315,00 sem juros',
+                  img: 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?q=80&w=400&auto=format&fit=crop'
+                },
+                {
+                  id: 6,
+                  badge: null,
+                  brand: 'Switch Cisco',
+                  title: 'Catalyst 1000 Series 24x 10/100/1000',
+                  specs: ['24 Portas GbE', '4x SFP Uplinks', 'Gerenciável'],
+                  price: '4.890,00',
+                  oldPrice: null,
+                  installments: '10x de R$ 489,00 sem juros',
+                  img: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=400&auto=format&fit=crop'
+                },
+                {
+                  id: 7,
+                  badge: '10% OFF',
+                  badgeType: 'destructive',
+                  brand: 'Notebook Dell',
+                  title: 'Latitude 5420 i7 11º Geração 16GB SSD 256GB',
+                  specs: ['Core i7-1185G7', '16GB RAM DDR4', '256GB NVMe'],
+                  price: '2.707,50',
+                  oldPrice: '3.008,30',
+                  installments: '10x de R$ 270,75 sem juros',
+                  img: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=400&auto=format&fit=crop'
+                },
+                {
+                  id: 8,
+                  badge: null,
+                  brand: 'Workstation Lenovo',
+                  title: 'ThinkStation P340 SFF Core i9 64GB 2TB SSD',
+                  specs: ['Core i9-10900', '64GB RAM DDR4', '2TB SSD NVMe'],
+                  price: '14.200,00',
+                  oldPrice: null,
+                  installments: '12x de R$ 1.183,33 sem juros',
+                  img: 'https://images.unsplash.com/photo-1626218174358-7769486c4b79?q=80&w=400&auto=format&fit=crop'
+                },
+                {
+                  id: 9,
+                  badge: 'Esgotado',
+                  badgeType: 'secondary',
+                  brand: 'Monitor AOC',
+                  title: 'M2470SW 24 Polegadas VGA HDMI',
+                  specs: ['24" FHD', 'VGA / HDMI', 'Tempo de resposta 5ms'],
+                  price: '617,50',
+                  oldPrice: null,
+                  installments: '10x de R$ 61,75 sem juros',
+                  img: 'https://images.unsplash.com/photo-1586210579191-33b45e38fa2c?q=80&w=400&auto=format&fit=crop'
+                }
+              ].map((item) => (
+                <div key={item.id} className="flex flex-col bg-card rounded-2xl border border-border/40 overflow-hidden hover-lift group relative">
                   {/* Status Overlay */}
-                  {item === 2 && (
+                  {item.badge === 'Esgotado' && (
                     <div className="absolute top-0 left-0 w-full h-full bg-background/60 backdrop-blur-[2px] z-20 flex items-center justify-center">
                       <Badge variant="secondary" className="text-sm px-3 py-1 border-border shadow-lg">Esgotado</Badge>
                     </div>
                   )}
                   
-                  <a href={`/produto/workstation-dell-3000-i7-${item}`} className="relative aspect-square p-6 flex items-center justify-center bg-white dark:bg-slate-800/50 cursor-pointer overflow-hidden">
-                    {item === 1 && <Badge variant="destructive" className="absolute top-4 left-4 z-10 shadow-md">15% OFF</Badge>}
-                    {item === 3 && <Badge variant="success" className="absolute top-4 left-4 z-10 shadow-md">Pronta Entrega</Badge>}
+                  <a href={`/produto/${item.title.toLowerCase().replace(/ /g, '-')}`} className="relative aspect-square p-6 flex items-center justify-center bg-white cursor-pointer overflow-hidden">
+                    {item.badge && item.badge !== 'Esgotado' && (
+                      <Badge variant={item.badgeType} className="absolute top-4 left-4 z-10 shadow-md">
+                        {item.badge}
+                      </Badge>
+                    )}
                     
-                    {/* Placeholder Image */}
-                    <div className="w-3/4 h-3/4 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse transition-transform duration-500 group-hover:scale-110" /> 
+                    {/* Real Image */}
+                    <div className="w-full h-full flex items-center justify-center p-4">
+                      <img src={item.img} alt={item.title} className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110" /> 
+                    </div>
                     
                     {/* Quick View Button on Hover */}
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                      <button className="px-4 py-2 bg-background/90 backdrop-blur text-foreground text-xs font-semibold rounded-full border border-border shadow-xl hover:bg-primary hover:text-primary-foreground transition-colors whitespace-nowrap flex items-center gap-2">
+                      <button className="px-4 py-2 bg-background/90 backdrop-blur text-foreground text-xs font-semibold rounded-full border border-border shadow-xl hover:bg-brand hover:text-white transition-colors whitespace-nowrap flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                         Visualização Rápida
                       </button>
@@ -147,27 +258,25 @@ export default function CatalogoPage() {
                   </a>
                   
                   <div className="p-5 flex flex-col flex-1 border-t border-border/10">
-                    <div className="text-xs text-muted-foreground mb-1 font-medium tracking-wide">Workstation Dell</div>
-                    <a href={`/produto/workstation-dell-3000-i7-${item}`} className="font-semibold text-base leading-tight mb-3 line-clamp-2 hover:text-primary transition-colors cursor-pointer">
-                      Precision 3000 Series MT Core i7 32GB RAM 1TB SSD
+                    <div className="text-xs text-muted-foreground mb-1 font-medium tracking-wide">{item.brand}</div>
+                    <a href={`/produto/${item.title.toLowerCase().replace(/ /g, '-')}`} className="font-semibold text-base leading-tight mb-3 line-clamp-2 hover:text-brand transition-colors cursor-pointer">
+                      {item.title}
                     </a>
                     
-                    {/* Features list tiny */}
+                    {/* Features list */}
                     <ul className="text-xs text-muted-foreground mb-4 space-y-1">
-                      <li>• Core i7-13700K</li>
-                      <li>• 32GB RAM DDR5</li>
-                      <li>• 1TB SSD NVMe</li>
+                      {item.specs.map((spec, i) => <li key={i}>• {spec}</li>)}
                     </ul>
 
                     <div className="mt-auto pt-2 flex items-end justify-between">
                       <div>
-                        {item === 1 && <div className="text-xs text-muted-foreground line-through">R$ 12.500,00</div>}
-                        <div className="text-xl font-extrabold text-primary">R$ 10.625,00</div>
-                        <div className="text-[10px] text-muted-foreground mt-0.5">ou 10x de R$ 1.062,50 sem juros</div>
+                        {item.oldPrice && <div className="text-xs text-muted-foreground line-through">R$ {item.oldPrice}</div>}
+                        <div className="text-xl font-extrabold text-brand">R$ {item.price}</div>
+                        <div className="text-[10px] text-muted-foreground mt-0.5">{item.installments}</div>
                       </div>
                     </div>
                     
-                    <Button className="w-full mt-5 rounded-lg font-semibold group-hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] transition-all">
+                    <Button className="w-full mt-5 rounded-lg font-semibold hover:bg-brand hover:text-white transition-all bg-foreground text-background">
                       Adicionar
                     </Button>
                   </div>
