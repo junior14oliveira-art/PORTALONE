@@ -3,8 +3,9 @@ import React from 'react';
 import Link from 'next/link';
 import { CategoryNav } from '@/components/CategoryNav';
 import { Logo } from '@/components/Logo';
-import { AuthProvider } from '@/components/AuthProvider';
+import { Providers } from '@/components/Providers';
 import { Footer } from '@/components/Footer';
+import { CartIcon } from '@/components/CartIcon';
 
 export const metadata = {
   title: 'PORTALONE - 4M&C Informática',
@@ -15,8 +16,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR" suppressHydrationWarning className="bg-background text-foreground">
       <body className={`font-sans antialiased min-h-screen flex flex-col`}>
-        <AuthProvider>
+        <Providers>
         
+        {/* TOP PROMO BAR */}
+        <div className="bg-brand text-white text-[11px] md:text-xs font-bold py-1.5 px-4 text-center tracking-wide flex flex-col md:flex-row justify-center items-center gap-2 md:gap-8">
+          <span className="flex items-center gap-1">💰 ATÉ 10% DE DESCONTO NO PIX</span>
+          <span className="hidden md:inline">•</span>
+          <span className="flex items-center gap-1">💳 PARCELE EM ATÉ 10X SEM JUROS</span>
+          <span className="hidden md:inline">•</span>
+          <span className="flex items-center gap-1">🚚 ENTREGA PARA TODO BRASIL</span>
+        </div>
+
         {/* TOP HEADER */}
         <header className="bg-gradient-to-r from-black to-[#062e2b] py-4 shadow-sm relative z-20">
           <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between gap-4 lg:gap-8">
@@ -61,15 +71,7 @@ export default function RootLayout({ children }) {
                   <div className="font-bold">Entrar / Cadastro</div>
                 </div>
               </Link>
-              <Link href="/carrinho" className="flex items-center gap-3 cursor-pointer hover:text-brand transition-colors group">
-                <div className="relative w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-brand/20 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                  <span className="absolute -top-1 -right-1 bg-brand text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-sm">0</span>
-                </div>
-                <div className="hidden lg:block text-sm font-bold">
-                  Carrinho
-                </div>
-              </Link>
+              <CartIcon />
             </div>
           </div>
         </header>
@@ -89,7 +91,7 @@ export default function RootLayout({ children }) {
         </a>
         <Footer />
 
-        </AuthProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -1,6 +1,22 @@
+"use client";
+
 import { HOME_CONTENT } from '../config/home-content';
+import { useCart } from '@/context/CartContext';
 
 export default function Home() {
+  const { addToCart } = useCart();
+
+  const handleAddToCart = (item) => {
+    // Generate a simple ID and clean price to number
+    const numericPrice = parseFloat(item.price.replace('.', '').replace(',', '.'));
+    addToCart({
+      id: item.id || item.name.replace(/\s+/g, '-').toLowerCase(),
+      name: item.name,
+      price: numericPrice,
+      img: item.img
+    });
+  };
+
   return (
     <div className="w-full flex flex-col items-center pb-20 bg-background text-foreground">
       
@@ -147,11 +163,15 @@ export default function Home() {
                       <img src={prod.img} alt={prod.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform" />
                    </div>
                    <h3 className="text-sm text-foreground font-medium mb-4 line-clamp-2 h-[40px] group-hover:text-brand transition-colors">{prod.name}</h3>
-                   <div className="mt-auto border-t border-border pt-4 relative">
-                      <div className="text-xl font-bold text-foreground">R$ {prod.price}</div>
-                      <div className="text-xs text-muted mt-1">no PIX ou 10x sem juros</div>
+                    <div className="mt-auto border-t border-border pt-4 relative">
+                      <div className="text-xl font-black text-[#25D366]">R$ {prod.price} <span className="text-xs font-bold text-[#25D366]">no PIX</span></div>
+                      <div className="text-xs text-muted mt-1">ou 10x sem juros</div>
                       {!prod.estoque && (
-                        <button className="absolute right-0 bottom-0 w-10 h-10 rounded-full bg-brand text-white shadow-md flex items-center justify-center hover:bg-brand-hover transition-colors" aria-label="Adicionar ao carrinho">
+                        <button 
+                          onClick={() => handleAddToCart(prod)}
+                          className="absolute right-0 bottom-0 w-10 h-10 rounded-full bg-brand text-white shadow-md flex items-center justify-center hover:bg-brand-hover transition-colors" 
+                          aria-label="Adicionar ao carrinho"
+                        >
                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                         </button>
                       )}
@@ -220,10 +240,13 @@ export default function Home() {
                  
                  <div className="mt-auto border-t border-border pt-4">
                     <div className="text-xs text-muted mb-1 line-through">R$ {(parseFloat(item.price.replace('.','').replace(',','.')) * 1.15).toLocaleString('pt-BR', {minimumFractionDigits:2})}</div>
-                    <div className="text-xl font-bold text-brand">R$ {item.price}</div>
-                    <div className="text-xs text-muted mb-4 mt-1">no PIX ou até 12x no cartão</div>
+                    <div className="text-2xl font-black text-[#25D366]">R$ {item.price}</div>
+                    <div className="text-xs font-bold text-[#25D366] mb-4 mt-0.5">no PIX ou até 12x no cartão</div>
                     
-                    <button className="w-full bg-foreground text-white font-bold text-sm py-3 rounded-lg hover:bg-brand transition-colors flex items-center justify-center gap-2">
+                    <button 
+                      onClick={() => handleAddToCart(item)}
+                      className="w-full bg-brand text-white font-bold text-sm py-3 rounded-lg hover:bg-brand-hover transition-colors flex items-center justify-center gap-2"
+                    >
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                       Comprar
                     </button>

@@ -46,6 +46,10 @@ export function CategoryNav() {
           })}
         </div>
         <div className="flex items-center gap-6">
+          <Link href="/minha-conta/pedidos" className="flex items-center gap-1 hover:text-brand transition-colors text-xs font-bold uppercase tracking-wide text-gray-700">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m12 16 4-4-4-4"/><path d="M8 12h8"/></svg>
+            Rastrear Pedido
+          </Link>
           <Link href="/catalogo?promocao=true" className="flex items-center gap-1 text-brand hover:text-brand-hover transition-colors text-xs font-bold bg-brand/5 px-3 py-1.5 rounded-full">
             <span className="text-brand">🔥</span> Ofertas do dia
           </Link>
