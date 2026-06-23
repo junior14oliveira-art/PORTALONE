@@ -238,7 +238,7 @@ export default function CatalogoPage() {
                   
                   <a href={`/produto/${item.title.toLowerCase().replace(/ /g, '-')}`} className="relative aspect-square p-6 flex items-center justify-center bg-white cursor-pointer overflow-hidden">
                     {item.badge && item.badge !== 'Esgotado' && (
-                      <Badge variant={item.badgeType} className="absolute top-4 left-4 z-10 shadow-md">
+                      <Badge variant={item.badgeType as "default" | "destructive" | "secondary" | "success"} className="absolute top-4 left-4 z-10 shadow-md">
                         {item.badge}
                       </Badge>
                     )}
