@@ -29,7 +29,7 @@ const authOptions = {
     })
   ],
   pages: {
-    signIn: '/minha-conta',
+    signIn: '/login',
   },
   session: {
     strategy: "jwt",
