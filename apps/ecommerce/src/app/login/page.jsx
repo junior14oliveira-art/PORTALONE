@@ -36,7 +36,7 @@ export default function LoginPage() {
         </h2>
         <p className="mt-2 text-center text-sm text-muted">
           Ou{' '}
-          <Link href="/minha-conta/cadastro" className="font-medium text-brand hover:text-brand-hover">
+          <Link href="/cadastro" className="font-medium text-brand hover:text-brand-hover">
             crie uma nova conta gratuitamente
           </Link>
         </p>
