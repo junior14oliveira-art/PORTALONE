@@ -2,14 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-
-const INITIAL_ITEMS = [
-  { id: 1, name: 'Dell Latitude 5420 — Intel Core i7, 16GB RAM, SSD 512GB', sku: 'DL-LAT5420-I7', price: 7499.90, quantity: 1, category: 'Notebooks', img: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=400&auto=format&fit=crop' },
-  { id: 2, name: 'Monitor Dell P2422H — Full HD 24" IPS, DisplayPort, HDMI', sku: 'DL-P2422H', price: 1890.00, quantity: 2, category: 'Monitores', img: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=400&auto=format&fit=crop' },
-  { id: 3, name: 'Switch Dell Networking S4048-ON — 48 portas SFP+', sku: 'DL-S4048ON', price: 12350.00, quantity: 1, category: 'Redes', img: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=400&auto=format&fit=crop' },
-];
+import { useCart } from '@/context/CartContext';
 
 const SHIPPING_OPTIONS_MOCK = [
   { code: 'PAC', name: 'PAC', days: '5 a 8 dias úteis', price: 38.90 },
@@ -17,15 +10,12 @@ const SHIPPING_OPTIONS_MOCK = [
   { code: 'SEDEX10', name: 'SEDEX 10', days: '1 dia útil (até 10h)', price: 145.00 },
 ];
 
-const COLORS = ['#0052B4', '#003F8A', '#1a6fce'];
-
 function formatBRL(v) {
   return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 export default function CarrinhoPage() {
-  const [items, setItems] = useState(INITIAL_ITEMS);
-  const [mounted, setMounted] = useState(false);
+  const { items, removeFromCart, updateQuantity, subtotal, totalItems, isMounted } = useCart();
   const [cep, setCep] = useState('');
   const [shippingOptions, setShippingOptions] = useState([]);
   const [selectedShipping, setSelectedShipping] = useState(null);
@@ -33,18 +23,20 @@ export default function CarrinhoPage() {
   const [shippingError, setShippingError] = useState('');
   const [removingId, setRemovingId] = useState(null);
 
-  useEffect(() => { setMounted(true); }, []);
-
-  const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
   const shippingCost = selectedShipping ? selectedShipping.price : 0;
   const total = subtotal + shippingCost;
 
-  const updateQty = (id, delta) =>
-    setItems(prev => prev.map(item => item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item));
+  const updateQty = (id, delta) => {
+    const item = items.find(i => i.id === id);
+    if (item) updateQuantity(id, Math.max(1, item.quantity + delta));
+  };
 
   const removeItem = (id) => {
     setRemovingId(id);
-    setTimeout(() => { setItems(prev => prev.filter(i => i.id !== id)); setRemovingId(null); }, 350);
+    setTimeout(() => {
+      removeFromCart(id);
+      setRemovingId(null);
+    }, 350);
   };
 
   const calcularFrete = async () => {
@@ -61,7 +53,7 @@ export default function CarrinhoPage() {
 
   const formatCep = (v) => { const d = v.replace(/\D/g, '').slice(0, 8); return d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d; };
 
-  if (!mounted) return null;
+  if (!isMounted) return null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -70,7 +62,7 @@ export default function CarrinhoPage() {
           <h1 className="text-3xl font-black text-foreground">Seu Carrinho</h1>
           {items.length > 0 && (
             <span className="bg-brand text-white text-sm font-bold px-3 py-1 rounded-full shadow-sm">
-              {items.reduce((s, i) => s + i.quantity, 0)} {items.reduce((s, i) => s + i.quantity, 0) === 1 ? 'item' : 'itens'}
+              {totalItems} {totalItems === 1 ? 'item' : 'itens'}
             </span>
           )}
         </div>
@@ -88,7 +80,7 @@ export default function CarrinhoPage() {
         ) : (
           <div className="flex flex-col lg:flex-row gap-8 items-start">
             <div className="flex-1 min-w-0 flex flex-col gap-4">
-              {items.map((item, idx) => (
+              {items.map((item) => (
                 <div key={item.id} className="bg-white rounded-2xl border border-border shadow-sm p-5 flex gap-5 items-start group hover:border-brand/30 hover:shadow-md transition-all"
                   style={{ opacity: removingId === item.id ? 0 : 1, transform: removingId === item.id ? 'translateX(60px)' : 'translateX(0)', transition: 'opacity 0.35s ease, transform 0.35s ease' }}>
                   <div className="w-28 h-28 rounded-xl flex items-center justify-center flex-shrink-0 bg-white border border-border/50 overflow-hidden">
@@ -97,9 +89,9 @@ export default function CarrinhoPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <p className="text-xs text-muted font-medium mb-0.5">{item.category}</p>
+                        {item.category && <p className="text-xs text-muted font-medium mb-0.5">{item.category}</p>}
                         <h3 className="font-bold text-foreground text-sm leading-snug group-hover:text-brand transition-colors">{item.name}</h3>
-                        <p className="text-xs text-muted mt-1">SKU: {item.sku}</p>
+                        {item.sku && <p className="text-xs text-muted mt-1">SKU: {item.sku}</p>}
                       </div>
                       <button onClick={() => removeItem(item.id)} className="text-muted hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-red-50 flex-shrink-0" aria-label="Remover">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
