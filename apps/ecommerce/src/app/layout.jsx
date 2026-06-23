@@ -1,4 +1,5 @@
 import './globals.css';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'PORTALONE - 4M&C Informática',
@@ -14,11 +15,11 @@ export default function RootLayout({ children }) {
         <header className="bg-nav-bg border-b border-border py-4 shadow-sm relative z-20">
           <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between gap-4 lg:gap-8">
             {/* Logo */}
-            <div className="flex-shrink-0 flex items-center cursor-pointer" aria-label="Página Inicial">
+            <Link href="/" className="flex-shrink-0 flex items-center cursor-pointer hover:opacity-90 transition-opacity" aria-label="Página Inicial">
               <div className="text-3xl font-black tracking-tighter">
                 <span className="text-brand">PORTAL</span><span className="text-foreground">ONE</span>
               </div>
-            </div>
+            </Link>
 
             {/* Location (Hidden on mobile) */}
             <div className="hidden lg:flex items-center gap-3 text-sm text-foreground cursor-pointer hover:opacity-80 transition-opacity">
@@ -47,7 +48,7 @@ export default function RootLayout({ children }) {
 
             {/* Account & Cart - Heuristic: Visibility of system status */}
             <div className="flex items-center gap-6 text-foreground">
-              <div className="hidden md:flex items-center gap-3 cursor-pointer hover:text-brand transition-colors group">
+              <Link href="/minha-conta" className="hidden md:flex items-center gap-3 cursor-pointer hover:text-brand transition-colors group">
                 <div className="w-10 h-10 rounded-full bg-muted-bg flex items-center justify-center group-hover:bg-brand/10 transition-colors">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </div>
@@ -55,8 +56,8 @@ export default function RootLayout({ children }) {
                   <div className="text-muted text-xs">Minha conta</div>
                   <div className="font-bold">Entrar / Cadastro</div>
                 </div>
-              </div>
-              <div className="flex items-center gap-3 cursor-pointer hover:text-brand transition-colors group">
+              </Link>
+              <Link href="/carrinho" className="flex items-center gap-3 cursor-pointer hover:text-brand transition-colors group">
                 <div className="relative w-10 h-10 rounded-full bg-muted-bg flex items-center justify-center group-hover:bg-brand/10 transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                   <span className="absolute -top-1 -right-1 bg-brand text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center group-hover:bg-brand-hover shadow-sm">0</span>
@@ -64,7 +65,7 @@ export default function RootLayout({ children }) {
                 <div className="hidden lg:block text-sm font-bold">
                   Carrinho
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         </header>
@@ -73,17 +74,17 @@ export default function RootLayout({ children }) {
         <nav className="bg-white border-b border-border text-foreground text-sm shadow-sm relative z-10">
           <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between py-3 overflow-x-auto hide-scrollbar whitespace-nowrap">
             <div className="flex items-center gap-6 font-medium">
-              <a href="#" className="flex items-center gap-2 font-bold uppercase text-brand hover:bg-brand/5 px-2 py-1 rounded transition-colors"><span className="text-xl leading-none">≡</span> Categorias</a>
-              <a href="#" className="hover:text-brand transition-colors">Computadores</a>
-              <a href="#" className="hover:text-brand transition-colors">Notebooks</a>
-              <a href="#" className="hover:text-brand transition-colors">Acessórios</a>
-              <a href="#" className="hover:text-brand transition-colors">Hardware</a>
-              <a href="#" className="hover:text-brand transition-colors">Servidores</a>
+              <Link href="/catalogo" className="flex items-center gap-2 font-bold uppercase text-brand hover:bg-brand/5 px-2 py-1 rounded transition-colors"><span className="text-xl leading-none">≡</span> Categorias</Link>
+              <Link href="/catalogo?categoria=computadores" className="hover:text-brand transition-colors">Computadores</Link>
+              <Link href="/catalogo?categoria=notebooks" className="hover:text-brand transition-colors">Notebooks</Link>
+              <Link href="/catalogo?categoria=acessorios" className="hover:text-brand transition-colors">Acessórios</Link>
+              <Link href="/catalogo?categoria=hardware" className="hover:text-brand transition-colors">Hardware</Link>
+              <Link href="/catalogo?categoria=servidores" className="hover:text-brand transition-colors">Servidores</Link>
             </div>
             <div className="flex items-center gap-6">
-              <a href="#" className="flex items-center gap-1 text-brand hover:text-brand-hover transition-colors text-xs font-bold bg-brand/5 px-3 py-1.5 rounded-full"><span className="text-brand">🔥</span> Ofertas do dia</a>
-              <a href="#" className="flex items-center gap-1 hover:text-brand transition-colors text-xs font-medium"><span className="text-muted">▾</span> Institucional</a>
-              <a href="#" className="flex items-center gap-1 hover:text-brand transition-colors text-xs font-medium"><span className="text-muted">▾</span> Atendimento</a>
+              <Link href="/catalogo?promocao=true" className="flex items-center gap-1 text-brand hover:text-brand-hover transition-colors text-xs font-bold bg-brand/5 px-3 py-1.5 rounded-full"><span className="text-brand">🔥</span> Ofertas do dia</Link>
+              <Link href="/institucional" className="flex items-center gap-1 hover:text-brand transition-colors text-xs font-medium"><span className="text-muted">▾</span> Institucional</Link>
+              <Link href="/atendimento" className="flex items-center gap-1 hover:text-brand transition-colors text-xs font-medium"><span className="text-muted">▾</span> Atendimento</Link>
             </div>
           </div>
         </nav>

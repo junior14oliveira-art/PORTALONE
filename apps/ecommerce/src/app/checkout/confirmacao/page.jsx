@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -22,7 +22,7 @@ const ORDER = {
 
 const TIMELINE = [
   { id: 1, label: 'Pedido Recebido', sublabel: 'Seu pedido foi confirmado', icon: 'check', status: 'done', date: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) },
-  { id: 2, label: 'Pagamento Confirmado', sublabel: 'Aguardando confirmação do pagamento', icon: 'pulse', status: 'active', date: 'Em andamento...' },
+  { id: 2, label: 'Aguardando Pagamento', sublabel: 'Processando confirmação do pagamento', icon: 'clock', status: 'active', date: 'Em andamento...' },
   { id: 3, label: 'Em Processamento', sublabel: 'Separação e embalagem do pedido', icon: 'box', status: 'pending', date: '' },
   { id: 4, label: 'Enviado', sublabel: 'Rastreamento disponível em breve', icon: 'truck', status: 'pending', date: '' },
   { id: 5, label: 'Entregue', sublabel: 'Pedido entregue com sucesso', icon: 'home', status: 'pending', date: '' },
