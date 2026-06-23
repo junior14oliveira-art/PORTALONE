@@ -19,8 +19,13 @@ export function CategoryNav() {
     <nav className="bg-white border-b border-border text-foreground text-sm shadow-sm relative z-10">
       <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between py-3 overflow-x-auto hide-scrollbar whitespace-nowrap">
         <div className="flex items-center gap-6 font-medium">
-          <Link href="/catalogo" className="flex items-center gap-2 font-bold uppercase text-brand hover:bg-brand/5 px-2 py-1 rounded transition-colors">
-            <span className="text-xl leading-none">≡</span> Categorias
+          <Link href="/catalogo" className="flex items-center gap-2 font-extrabold uppercase text-[#23A79D] hover:text-[#1c8c83] transition-colors tracking-wide">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="5" width="20" height="3" />
+              <rect x="2" y="11" width="20" height="3" />
+              <rect x="2" y="17" width="20" height="3" />
+            </svg>
+            CATEGORIAS
           </Link>
           
           {navItems.map((item) => {
