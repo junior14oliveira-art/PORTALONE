@@ -1,14 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   * {
     @apply border-border;
+    -webkit-tap-highlight-color: transparent;
   }
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-sans);
+    font-family: 'Inter', var(--font-sans), Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /* Melhorar foco para acessibilidade (Heurística Nielsen #3) */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
   }
 }
 
@@ -19,4 +31,28 @@
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Micro-animação para botões de adicionar ao carrinho */
+@keyframes cart-bounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(0.9); }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.cart-animate {
+  animation: cart-bounce 0.4s ease-in-out;
+}
+
+/* Shimmer para skeleton loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }

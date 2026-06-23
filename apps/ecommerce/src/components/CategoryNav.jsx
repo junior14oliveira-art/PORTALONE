@@ -19,11 +19,11 @@ export function CategoryNav() {
     <nav className="bg-white border-b border-border text-foreground text-sm shadow-sm relative z-10">
       <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between py-3 overflow-x-auto hide-scrollbar whitespace-nowrap">
         <div className="flex items-center gap-6 font-medium">
-          <Link href="/catalogo" className="flex items-center gap-2 font-extrabold uppercase text-[#23A79D] hover:text-[#1c8c83] transition-colors tracking-wide">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <rect x="2" y="5" width="20" height="3" />
-              <rect x="2" y="11" width="20" height="3" />
-              <rect x="2" y="17" width="20" height="3" />
+          <Link href="/catalogo" className="flex items-center gap-2.5 font-extrabold uppercase bg-[#1a1a2e] text-white hover:bg-[#23A79D] transition-all px-4 py-2.5 rounded-lg tracking-widest text-xs shadow-sm group">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+              <rect x="2" y="4" width="20" height="3" rx="1.5" />
+              <rect x="2" y="10.5" width="20" height="3" rx="1.5" />
+              <rect x="2" y="17" width="20" height="3" rx="1.5" />
             </svg>
             CATEGORIAS
           </Link>
