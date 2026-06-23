@@ -141,29 +141,30 @@ export function CategoryNav() {
   const currentCategory = searchParams.get('categoria');
 
   return (
-    <nav className="bg-white border-b border-gray-100 text-sm shadow-sm" style={{ position: 'relative', zIndex: 100 }}>
-      <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between py-2.5 overflow-x-auto whitespace-nowrap"
-        style={{ scrollbarWidth: 'none' }}>
+    <nav className="bg-white border-b border-gray-100 text-sm shadow-sm relative z-[999]">
+      <div className="container mx-auto px-4 max-w-7xl flex items-center justify-between py-2.5">
 
         <div className="flex items-center gap-5 font-medium">
           {/* Dropdown de categorias */}
           <CategoryDropdown />
 
           {/* Links rápidos */}
-          {navItems.map(item => {
-            const active = currentCategory === item.slug;
-            return (
-              <Link key={item.slug} href={item.href}
-                className={`transition-colors px-3 py-1.5 rounded-md text-sm
-                  ${active ? 'font-bold text-gray-900 bg-gray-100' : 'text-gray-600 hover:text-[#23A79D]'}`}>
-                {item.label}
-              </Link>
-            );
-          })}
+          <div className="hidden lg:flex items-center gap-2">
+            {navItems.map(item => {
+              const active = currentCategory === item.slug;
+              return (
+                <Link key={item.slug} href={item.href}
+                  className={`transition-colors px-3 py-1.5 rounded-md text-sm
+                    ${active ? 'font-bold text-gray-900 bg-gray-100' : 'text-gray-600 hover:text-[#23A79D]'}`}>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
         {/* Links direita */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4 md:gap-5">
           <Link href="/minha-conta/pedidos"
             className="flex items-center gap-1.5 text-gray-600 hover:text-[#23A79D] transition-colors text-xs font-bold uppercase tracking-wide">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

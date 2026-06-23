@@ -4,6 +4,9 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { HOME_CONTENT } from '../config/home-content';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/components/Toast';
+import { useEditor } from '@/context/EditorContext';
+import { BannerEditorPanel } from '@/components/editor/BannerEditorPanel';
+import { EditableText } from '@/components/editor/EditableText';
 
 /* ─── Hero Carousel Data ──────────────────────────────────────────────────── */
 const HERO_SLIDES = [
@@ -55,23 +58,36 @@ function HeroCarousel() {
   const [animating, setAnimating] = useState(false);
   const timerRef = useRef(null);
 
+  const { editorMode, selectedElement, selectElement, getContent, updateContent } = useEditor();
+
   const goTo = useCallback((idx) => {
-    if (animating) return;
+    if (animating || editorMode) return;
     setAnimating(true);
     setCurrent(idx);
     setTimeout(() => setAnimating(false), 600);
-  }, [animating]);
+  }, [animating, editorMode]);
 
   const prev = () => goTo((current - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
   const next = useCallback(() => goTo((current + 1) % HERO_SLIDES.length), [current, goTo]);
 
-  // Auto-advance every 5 seconds
+  // Auto-advance every 5 seconds (only if not in editor mode)
   useEffect(() => {
+    if (editorMode) return;
     timerRef.current = setInterval(next, 5000);
     return () => clearInterval(timerRef.current);
-  }, [next]);
+  }, [next, editorMode]);
 
-  const slide = HERO_SLIDES[current];
+  // Handle slide selection in editor mode
+  const handleSelect = (e) => {
+    if (editorMode) {
+      e.preventDefault();
+      e.stopPropagation();
+      selectElement({ id: `hero_slide_${current}`, type: 'hero_slide', index: current, label: `Hero Slide ${current + 1}` });
+    }
+  };
+
+  // Merge default slide with editor content
+  const slide = getContent(`hero_slide_${current}`, HERO_SLIDES[current]);
 
   return (
     <section
@@ -107,7 +123,8 @@ function HeroCarousel() {
       {/* ── Slide content ───────────────────────────────────────────────── */}
       <div
         key={current}
-        className="w-full h-full relative flex items-center"
+        onClick={handleSelect}
+        className={`w-full h-full relative flex items-center ${editorMode ? 'cursor-pointer hover:outline hover:outline-4 hover:outline-[#23A79D] hover:outline-offset-[-4px]' : ''}`}
         style={{ animation: 'heroCrossfade 0.6s ease forwards' }}
       >
         {/* Laptop image (slides 0 & 1) */}
@@ -203,6 +220,16 @@ function HeroCarousel() {
           animation: cartBounce 0.4s ease forwards;
         }
       `}</style>
+      
+      {/* Editor Panel Render */}
+      {selectedElement?.type === 'hero_slide' && (
+        <BannerEditorPanel
+          slideId={`hero_slide_${selectedElement.index}`}
+          slideData={getContent(`hero_slide_${selectedElement.index}`, HERO_SLIDES[selectedElement.index])}
+          onUpdate={updateContent}
+          onClose={selectElement} // passing clearSelection essentially
+        />
+      )}
     </section>
   );
 }

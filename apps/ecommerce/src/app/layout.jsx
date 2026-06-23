@@ -6,6 +6,7 @@ import { Logo } from '@/components/Logo';
 import { Providers } from '@/components/Providers';
 import { Footer } from '@/components/Footer';
 import { CartIcon } from '@/components/CartIcon';
+import { EditorToolbar } from '@/components/editor/EditorToolbar';
 
 export const metadata = {
   title: 'PORTALONE - 4M&C Informática',
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="pt-BR" suppressHydrationWarning className="bg-background text-foreground">
       <body className={`font-sans antialiased min-h-screen flex flex-col`}>
         <Providers>
+          <EditorToolbar />
         
         {/* TOP PROMO BAR */}
         <div className="bg-brand text-white text-[11px] md:text-xs font-bold py-1.5 px-4 text-center tracking-wide flex flex-col md:flex-row justify-center items-center gap-2 md:gap-8">
