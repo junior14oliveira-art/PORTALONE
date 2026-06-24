@@ -39,12 +39,12 @@ function InputField({ label, value, onChange, placeholder, type = 'text', requir
 
 /* -------- STEP 1 -------- */
 function Step1({ onNext }) {
-  const [mode, setMode] = useState('login');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [nome, setNome] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [guestEmail, setGuestEmail] = useState('');
+  const [mode, setMode] = useState('guest');
+  const [email, setEmail] = useState('cliente@empresa.com.br');
+  const [password, setPassword] = useState('123456');
+  const [nome, setNome] = useState('João Silva');
+  const [telefone, setTelefone] = useState('(11) 91234-5678');
+  const [guestEmail, setGuestEmail] = useState('cliente@empresa.com.br');
 
   const handleSubmit = () => {
     if (mode === 'login' && (!email || !password)) return;
@@ -88,13 +88,13 @@ function Step1({ onNext }) {
 
 /* -------- STEP 2 -------- */
 function Step2({ onNext, shipping, setShipping }) {
-  const [cep, setCep] = useState('');
-  const [rua, setRua] = useState('');
-  const [numero, setNumero] = useState('');
-  const [complemento, setComplemento] = useState('');
-  const [bairro, setBairro] = useState('');
-  const [cidade, setCidade] = useState('');
-  const [estado, setEstado] = useState('');
+  const [cep, setCep] = useState('01001-000');
+  const [rua, setRua] = useState('Praça da Sé');
+  const [numero, setNumero] = useState('123');
+  const [complemento, setComplemento] = useState('Andar 5');
+  const [bairro, setBairro] = useState('Sé');
+  const [cidade, setCidade] = useState('São Paulo');
+  const [estado, setEstado] = useState('SP');
   const [shippingOptions, setShippingOptions] = useState([]);
   const [loadingShipping, setLoadingShipping] = useState(false);
   const [loadingCep, setLoadingCep] = useState(false);
