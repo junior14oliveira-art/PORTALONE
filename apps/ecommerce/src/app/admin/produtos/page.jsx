@@ -392,8 +392,10 @@ export default function ProdutosPage() {
   const syncAPI = async () => {
     setSyncing(true);
     try {
-      const res = await fetch('/api/produtos/sync');
+      const res = await fetch('/api/produtos/sync', { cache: 'no-store' });
       const data = await res.json();
+      console.log('Sync API Response:', data);
+
       if (data && data.success && data.produtos) {
         // Find products that are not yet imported
         const newProducts = [];
@@ -403,31 +405,44 @@ export default function ProdutosPage() {
           if (!exists) {
             newProducts.push({
               id: p.id_unico,
-              name: p.nome_exibicao || p.modelo,
+              name: p.nome_exibicao || p.modelo || 'Produto sem nome',
               sku: p.id_unico,
-              category: CATEGORIES.includes(p.categoria) ? p.categoria : CATEGORIES[0], // fallback to first category
-              price: parseFloat(p.preco || 0),
+              category: 'Computadores', // default
+              price: parseFloat(p.preco) || parseFloat(p.preco_venda) || 0,
               pricePromo: '',
-              stock: p.quantidade_disponivel || 0,
-              description: `Marca: ${p.marca} | Processador: ${p.processador} | Geração: ${p.geracao}`,
+              stock: parseInt(p.quantidade_disponivel) || parseInt(p.quantidade_estoque) || 0,
+              description: `Marca: ${p.marca || 'N/A'} | Processador: ${p.processador || 'N/A'}`,
               image: '',
-              status: 'Inativo' // Adds as Inativo by default
+              status: 'Ativo' // Adds as Ativo automatically
             });
           }
         });
         if (newProducts.length > 0) {
-          setProducts(prev => [...prev, ...newProducts]);
-          setToast(`${newProducts.length} produtos importados do estoque!`);
+          setProducts(prev => {
+            const updated = [...prev, ...newProducts];
+            console.log('Updated products length:', updated.length);
+            return updated;
+          });
+          setToast(`${newProducts.length} produtos importados automaticamente do estoque!`);
         } else {
-          setToast('Nenhum produto novo para importar.');
+          setToast('Estoque já está sincronizado.');
         }
+      } else {
+        console.error('Invalid API data format:', data);
+        setToast('Formato de dados inválido da API.');
       }
     } catch (e) {
-      setToast('Erro ao sincronizar com estoque.');
+      console.error('Sync Error:', e);
+      setToast('Erro ao sincronizar com estoque: ' + e.message);
     } finally {
       setSyncing(false);
     }
   };
+
+  useEffect(() => {
+    // Auto sync on mount
+    syncAPI();
+  }, []);
 
   const openEdit = (product) => {
     setEditProduct(product);

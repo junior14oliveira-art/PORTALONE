@@ -73,30 +73,24 @@ export default function AdminLayout({ children }) {
   const router = useRouter();
   const { enterEditor } = useEditor();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(true);
 
   useEffect(() => {
     // Simple admin check — replace with real auth logic
-    const role = typeof window !== 'undefined' ? localStorage.getItem('role') : null;
-    if (role !== 'admin') {
-      // For demo purposes, set admin automatically
-      localStorage.setItem('role', 'admin');
+    if (typeof window !== 'undefined') {
+      const role = localStorage.getItem('role');
+      if (role !== 'admin') {
+        localStorage.setItem('role', 'admin');
+      }
     }
-    setIsAdmin(true);
-  }, [router]);
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('role');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('role');
+    }
     router.push('/login');
   };
-
-  if (isAdmin === null) {
-    return (
-      <div className="min-h-screen bg-[#0f0f23] flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-[#23A79D] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
 
   return (
     <div className="flex min-h-screen bg-gray-100">
