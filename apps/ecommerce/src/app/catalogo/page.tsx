@@ -18,14 +18,21 @@ function CatalogContent() {
   const toast = useToast();
 
   const handleAddToCart = (item) => {
-    const numericPrice = typeof item.price === 'string' ? parseFloat(item.price.replace(/\./g, '').replace(',', '.')) : item.price;
+    let numericPrice = 0;
+    if (typeof item.price === 'string') {
+      const parsed = parseFloat(item.price.replace(/\./g, '').replace(',', '.'));
+      numericPrice = isNaN(parsed) ? 0 : parsed;
+    } else if (typeof item.price === 'number') {
+      numericPrice = item.price;
+    }
+
     addToCart({
-      id: item.id,
-      name: item.title,
-      price: numericPrice || 0,
+      id: item.id || 'produto-sem-id',
+      name: item.title || 'Produto',
+      price: numericPrice,
       img: item.img,
     });
-    toast.success(`${item.title.substring(0, 30)}... adicionado ao carrinho! 🛒`);
+    toast.success(`${(item.title || 'Produto').substring(0, 30)}... adicionado ao carrinho! 🛒`);
   };
 
   // Filter logic

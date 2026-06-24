@@ -82,11 +82,18 @@ export default function ProdutoPage() {
 
   const handleAddCart = () => {
     setAdding(true);
-    const numericPrice = typeof product.price === 'string' ? parseFloat(product.price.replace(/\./g, '').replace(',', '.')) : product.price;
+    let numericPrice = 0;
+    if (typeof product.price === 'string') {
+      const parsed = parseFloat(product.price.replace(/\./g, '').replace(',', '.'));
+      numericPrice = isNaN(parsed) ? 0 : parsed;
+    } else if (typeof product.price === 'number') {
+      numericPrice = product.price;
+    }
+
     addToCart({
-      id: product.id,
-      name: product.title,
-      price: numericPrice || 0,
+      id: product.id || 'produto-sem-id',
+      name: product.title || 'Produto',
+      price: numericPrice,
       img: product.img,
     });
     setTimeout(() => {
@@ -96,11 +103,18 @@ export default function ProdutoPage() {
   };
 
   const handleBuyNow = () => {
-    const numericPrice = typeof product.price === 'string' ? parseFloat(product.price.replace(/\./g, '').replace(',', '.')) : product.price;
+    let numericPrice = 0;
+    if (typeof product.price === 'string') {
+      const parsed = parseFloat(product.price.replace(/\./g, '').replace(',', '.'));
+      numericPrice = isNaN(parsed) ? 0 : parsed;
+    } else if (typeof product.price === 'number') {
+      numericPrice = product.price;
+    }
+
     addToCart({
-      id: product.id,
-      name: product.title,
-      price: numericPrice || 0,
+      id: product.id || 'produto-sem-id',
+      name: product.title || 'Produto',
+      price: numericPrice,
       img: product.img,
     });
     router.push('/checkout');
