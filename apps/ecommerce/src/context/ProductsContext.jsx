@@ -18,7 +18,8 @@ export function ProductsProvider({ children }) {
           const mapped = data.produtos.map(p => {
             let cat = 'computadores';
             const mod = p.modelo?.toLowerCase() || '';
-            if (mod.includes('notebook')) cat = 'notebooks';
+            const nome = p.nome_exibicao?.toLowerCase() || '';
+            if (mod.includes('notebook') || nome.includes('notebook')) cat = 'notebooks';
             let precoReal = parseFloat(p.preco) || 0;
 
             // Injetar preço fake para simulações se for notebook e estiver zerado
