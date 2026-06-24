@@ -359,10 +359,12 @@ export default function Home() {
                            {[1,2,3,4,5].map(s => <svg key={s} className="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>)}
                         </div>
                      </div>
-                     <div className="h-44 w-full flex items-center justify-center mb-4 p-4">
-                        <EditableImage id={`rec_${i}`} field="img" defaults={prod} className="w-full h-full" imgClassName="w-full h-full object-contain group-hover:scale-105 transition-transform" />
-                     </div>
-                     <EditableText id={`rec_${i}`} field="name" defaults={prod} tag="h3" className="text-sm text-foreground font-medium mb-4 line-clamp-2 h-[40px] group-hover:text-brand transition-colors" />
+                     <a href={`/produto/${encodeURIComponent(prod.name.toLowerCase().replace(/ /g, '-'))}`} className="block">
+                       <div className="h-44 w-full flex items-center justify-center mb-4 p-4">
+                          <EditableImage id={`rec_${i}`} field="img" defaults={prod} className="w-full h-full" imgClassName="w-full h-full object-contain group-hover:scale-105 transition-transform" />
+                       </div>
+                       <EditableText id={`rec_${i}`} field="name" defaults={prod} tag="h3" className="text-sm text-foreground font-medium mb-4 line-clamp-2 h-[40px] group-hover:text-brand transition-colors" />
+                     </a>
                       <div className="mt-auto border-t border-border pt-4 relative">
                         <div className="text-xl font-black text-[#25D366]">R$ <EditableText id={`rec_${i}`} field="price" defaults={prod} /> <span className="text-xs font-bold text-[#25D366]">no PIX</span></div>
                         <div className="text-xs text-muted mt-1">ou 10x sem juros</div>
@@ -435,10 +437,12 @@ export default function Home() {
                    <div className="flex justify-between items-start mb-3">
                       {item.estoque ? <span className="bg-warning text-foreground text-[10px] font-bold px-2 py-1 rounded">OFERTA</span> : <div></div>}
                    </div>
-                   <div className="h-36 w-full flex items-center justify-center mb-6 p-2">
-                      <EditableImage id={`hype_${i}`} field="img" defaults={item} className="w-full h-full" imgClassName="w-full h-full object-contain group-hover:scale-105 transition-transform" />
-                   </div>
-                   <EditableText id={`hype_${i}`} field="name" defaults={item} tag="h3" className="text-sm text-foreground font-medium mb-4 line-clamp-2 h-[40px] group-hover:text-brand transition-colors" />
+                   <a href={`/produto/${encodeURIComponent(item.name.toLowerCase().replace(/ /g, '-'))}`} className="block">
+                     <div className="h-36 w-full flex items-center justify-center mb-6 p-2">
+                        <EditableImage id={`hype_${i}`} field="img" defaults={item} className="w-full h-full" imgClassName="w-full h-full object-contain group-hover:scale-105 transition-transform" />
+                     </div>
+                     <EditableText id={`hype_${i}`} field="name" defaults={item} tag="h3" className="text-sm text-foreground font-medium mb-4 line-clamp-2 h-[40px] group-hover:text-brand transition-colors" />
+                   </a>
                    
                    <div className="mt-auto border-t border-border pt-4">
                       <div className="text-xs text-muted mb-1 line-through">R$ {(parseFloat(item.price.replace('.','').replace(',','.')) * 1.15).toLocaleString('pt-BR', {minimumFractionDigits:2})}</div>
