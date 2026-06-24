@@ -4,7 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { ALL_PRODUCTS } from '@/lib/mock-data';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, Heart, Share2, Star, Shield, ArrowDownUp, ShieldCheck, MapPin, Search, PlusCircle, CheckCircle, Store, RotateCcw, ImageIcon } from 'lucide-react';
+import { ChevronRight, Heart, Share2, Star, Shield, ArrowDownUp, ShieldCheck, MapPin, Search, PlusCircle, CheckCircle, Store, RotateCcw, ImageIcon, Truck } from 'lucide-react';
 import { useState } from 'react';
 
 // Variantes de demonstração para a UI do Mercado Livre
@@ -42,7 +42,8 @@ export default function ProdutoPage() {
     { id: 2, author: 'Juliana P.', rating: 4, date: '15 jun. 2026', text: 'Chegou bem embalado e funcionando perfeitamente. Só a transportadora que atrasou 1 dia, mas o produto em si é ótimo.', photos: [] }
   ]);
 
-  const product = ALL_PRODUCTS.find(p => p.id === parseInt(id) || p.title.toLowerCase().replace(/ /g, '-') === id) || ALL_PRODUCTS[0];
+  const decodedId = decodeURIComponent(id || '');
+  const product = ALL_PRODUCTS.find(p => p.id === parseInt(decodedId) || p.title.toLowerCase().replace(/ /g, '-') === decodedId) || ALL_PRODUCTS[0];
 
   if (!product) return null;
 
