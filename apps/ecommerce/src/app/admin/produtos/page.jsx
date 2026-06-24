@@ -527,7 +527,7 @@ export default function ProdutosPage() {
                 <th className="text-left px-6 py-3 font-medium">Preço</th>
                 <th className="text-left px-6 py-3 font-medium">Estoque</th>
                 <th className="text-left px-6 py-3 font-medium">Status</th>
-                <th className="text-right px-6 py-3 font-medium">Ações</th>
+                <th className="text-right px-6 py-3 font-medium sticky right-0 bg-gray-50 shadow-[-4px_0_10px_rgba(0,0,0,0.05)]">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -539,7 +539,7 @@ export default function ProdutosPage() {
                 </tr>
               ) : (
                 filtered.map((product) => (
-                  <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={product.id} className="hover:bg-gray-50 transition-colors group">
                     <td className="px-6 py-4">
                       <img
                         src={product.image || 'https://placehold.co/48x48/e5e7eb/9ca3af?text=?'}
@@ -579,7 +579,7 @@ export default function ProdutosPage() {
                         {product.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 sticky right-0 bg-white shadow-[-4px_0_10px_rgba(0,0,0,0.05)] group-hover:bg-gray-50 transition-colors">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => openEdit(product)}

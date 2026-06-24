@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronRight, Heart, Share2, Star, Shield, ArrowDownUp, ShieldCheck, MapPin, Search, PlusCircle, CheckCircle, Store, RotateCcw, ImageIcon, Truck } from 'lucide-react';
 import { useState } from 'react';
 import { EditableText } from '@/components/editor/EditableText';
+import { EditableImage } from '@/components/editor/EditableImage';
 
 // Variantes de demonstração para a UI do Mercado Livre
 const MOCK_VARIANTS = {
@@ -134,7 +135,14 @@ export default function ProdutoPage() {
 
             {/* Main Image */}
             <div className="flex-1 relative flex items-center justify-center bg-white h-[300px] md:h-[500px]">
-              <img src={galleryImages[activeImage]} className="max-w-full max-h-full object-contain mix-blend-multiply" alt={product.title} />
+              <EditableImage 
+                id={product.id} 
+                field={`img_${activeImage}`} 
+                defaults={{[`img_${activeImage}`]: galleryImages[activeImage]}} 
+                className="max-w-full max-h-full" 
+                imgClassName="object-contain mix-blend-multiply" 
+                alt={product.title} 
+              />
             </div>
           </div>
 
