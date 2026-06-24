@@ -43,7 +43,7 @@ export default function ProdutoPage() {
   ]);
 
   const decodedId = decodeURIComponent(id || '');
-  const product = ALL_PRODUCTS.find(p => p.id === parseInt(decodedId) || p.title.toLowerCase().replace(/ /g, '-') === decodedId) || ALL_PRODUCTS[0];
+  const product = ALL_PRODUCTS.find(p => p.id === decodedId || p.id === parseInt(decodedId) || p.title.toLowerCase().replace(/ /g, '-') === decodedId) || ALL_PRODUCTS[0];
 
   if (!product) return null;
 
