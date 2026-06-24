@@ -1,7 +1,8 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { ALL_PRODUCTS } from '@/lib/mock-data';
+import { useProducts } from '@/context/ProductsContext';
+import { useCart } from '@/context/CartContext';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronRight, Heart, Share2, Star, Shield, ArrowDownUp, ShieldCheck, MapPin, Search, PlusCircle, CheckCircle, Store, RotateCcw, ImageIcon, Truck } from 'lucide-react';
@@ -22,6 +23,8 @@ const MOCK_VARIANTS = {
 export default function ProdutoPage() {
   const { id } = useParams();
   const router = useRouter();
+  const { products, loading } = useProducts();
+  const { addToCart } = useCart();
   
   // States para Variantes
   const [adding, setAdding] = useState(false);
@@ -45,9 +48,29 @@ export default function ProdutoPage() {
   ]);
 
   const decodedId = decodeURIComponent(id || '');
-  const product = ALL_PRODUCTS.find(p => p.id === decodedId || p.id === parseInt(decodedId) || p.title.toLowerCase().replace(/ /g, '-') === decodedId) || ALL_PRODUCTS[0];
+  const product = products.find(p => p.id === decodedId || p.id === parseInt(decodedId) || p.title.toLowerCase().replace(/ /g, '-') === decodedId);
 
-  if (!product) return null;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
+         <div className="text-center text-muted-foreground flex flex-col items-center gap-4">
+            <svg className="animate-spin w-8 h-8 text-[#0052B4]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+               <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+            </svg>
+            <p className="font-semibold text-lg text-gray-500">Buscando produto no estoque...</p>
+         </div>
+      </div>
+    );
+  }
+
+  if (!product) return (
+    <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
+      <div className="text-center p-8 bg-white rounded-xl shadow">
+        <h2 className="text-2xl font-bold mb-4">Produto não encontrado</h2>
+        <Button onClick={() => router.push('/')}>Voltar à página inicial</Button>
+      </div>
+    </div>
+  );
 
   // Imagens simuladas para a galeria
   const galleryImages = [
@@ -59,10 +82,28 @@ export default function ProdutoPage() {
 
   const handleAddCart = () => {
     setAdding(true);
+    const numericPrice = typeof product.price === 'string' ? parseFloat(product.price.replace(/\./g, '').replace(',', '.')) : product.price;
+    addToCart({
+      id: product.id,
+      name: product.title,
+      price: numericPrice || 0,
+      img: product.img,
+    });
     setTimeout(() => {
       setAdding(false);
       alert('Produto adicionado ao carrinho com sucesso!');
     }, 600);
+  };
+
+  const handleBuyNow = () => {
+    const numericPrice = typeof product.price === 'string' ? parseFloat(product.price.replace(/\./g, '').replace(',', '.')) : product.price;
+    addToCart({
+      id: product.id,
+      name: product.title,
+      price: numericPrice || 0,
+      img: product.img,
+    });
+    router.push('/checkout');
   };
 
   const handleVariantChange = (key, value) => {
@@ -375,19 +416,18 @@ export default function ProdutoPage() {
             </div>
 
             {/* Botões de Ação */}
-            <div className="flex flex-col gap-2 mb-6">
+            <div className="flex flex-col gap-2 mt-6">
               <Button 
-                size="lg" 
-                className="bg-[#3483fa] hover:bg-[#2968c8] text-white text-[16px] h-12 rounded-lg font-semibold transition-colors w-full"
+                onClick={handleBuyNow}
+                className="w-full h-12 text-base font-semibold bg-[#3483fa] hover:bg-[#2968c8] text-white rounded-md transition-colors"
               >
                 Comprar agora
               </Button>
               <Button 
-                size="lg" 
-                variant="outline" 
-                onClick={handleAddCart}
+                onClick={handleAddCart} 
                 disabled={adding}
-                className="bg-[#e3edfb] hover:bg-[#d0e3fc] text-[#3483fa] border-none text-[16px] h-12 rounded-lg font-semibold transition-colors w-full"
+                variant="outline" 
+                className="w-full h-12 text-base font-semibold bg-[rgba(65,137,230,.15)] text-[#3483fa] border-none hover:bg-[rgba(65,137,230,.2)] rounded-md transition-colors"
               >
                 {adding ? 'Adicionando...' : 'Adicionar ao carrinho'}
               </Button>

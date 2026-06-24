@@ -5,22 +5,38 @@ import { useSearchParams } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-import { ALL_PRODUCTS } from '@/lib/mock-data';
+import { useProducts } from '@/context/ProductsContext';
+import { useCart } from '@/context/CartContext';
+import { useToast } from '@/components/Toast';
 
 function CatalogContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('categoria');
   const [priceRange, setPriceRange] = useState(50000);
+  const { products, loading } = useProducts();
+  const { addToCart } = useCart();
+  const toast = useToast();
+
+  const handleAddToCart = (item) => {
+    const numericPrice = typeof item.price === 'string' ? parseFloat(item.price.replace(/\./g, '').replace(',', '.')) : item.price;
+    addToCart({
+      id: item.id,
+      name: item.title,
+      price: numericPrice || 0,
+      img: item.img,
+    });
+    toast.success(`${item.title.substring(0, 30)}... adicionado ao carrinho! 🛒`);
+  };
 
   // Filter logic
-  const filteredProducts = ALL_PRODUCTS.filter(item => {
+  const filteredProducts = products.filter(item => {
     // Filter by category if present
     if (categoryParam && item.category !== categoryParam) {
       return false;
     }
     // Filter by price
-    const priceNum = parseFloat(item.price.replace(/\./g, '').replace(',', '.'));
-    if (priceNum > priceRange) {
+    const priceNum = typeof item.price === 'string' ? parseFloat(item.price.replace(/\./g, '').replace(',', '.')) : item.price;
+    if (!isNaN(priceNum) && priceNum > priceRange) {
       return false;
     }
     return true;
@@ -121,7 +137,14 @@ function CatalogContent() {
 
           {/* LISTAGEM DINÂMICA DE PRODUTOS (Grid Direita) */}
           <div className="flex-1">
-            {filteredProducts.length === 0 ? (
+            {loading ? (
+              <div className="w-full py-20 text-center text-muted-foreground flex flex-col items-center gap-4">
+                <svg className="animate-spin w-8 h-8 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                </svg>
+                <p>Carregando produtos do estoque real...</p>
+              </div>
+            ) : filteredProducts.length === 0 ? (
               <div className="flex flex-col items-center justify-center p-12 text-center border border-dashed border-border/60 rounded-2xl bg-muted/20">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground mb-4"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                 <h3 className="text-lg font-semibold">Nenhum produto encontrado</h3>
@@ -161,7 +184,7 @@ function CatalogContent() {
                     
                     <div className="p-5 flex flex-col flex-1 border-t border-border/10">
                       <div className="text-xs text-muted-foreground mb-1 font-medium tracking-wide">{item.brand}</div>
-                      <a href={`/produto/${item.title.toLowerCase().replace(/ /g, '-')}`} className="font-semibold text-base leading-tight mb-3 line-clamp-2 hover:text-brand transition-colors cursor-pointer">
+                      <a href={`/produto/${item.id}`} className="font-semibold text-base leading-tight mb-3 line-clamp-2 hover:text-brand transition-colors cursor-pointer">
                         {item.title}
                       </a>
                       
@@ -178,7 +201,9 @@ function CatalogContent() {
                         </div>
                       </div>
                       
-                      <Button className="w-full mt-5 rounded-lg font-semibold hover:bg-brand hover:text-white transition-all bg-foreground text-background">
+                      <Button 
+                        onClick={() => handleAddToCart(item)}
+                        className="w-full mt-5 rounded-lg font-semibold hover:bg-brand hover:text-white transition-all bg-foreground text-background">
                         Adicionar
                       </Button>
                     </div>

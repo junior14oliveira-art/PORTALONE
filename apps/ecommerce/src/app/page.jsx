@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { HOME_CONTENT } from '../config/home-content';
+import { useProducts } from '@/context/ProductsContext';
 import { useCart } from '@/context/CartContext';
 import { useToast } from '@/components/Toast';
 import { useEditor } from '@/context/EditorContext';
@@ -238,7 +239,24 @@ function HeroCarousel() {
 /* ─── Page ────────────────────────────────────────────────────────────────── */
 export default function Home() {
   const { addToCart } = useCart();
+  const { products, loading } = useProducts();
   const toast = useToast();
+
+  const recommended = products.length > 0 ? products.slice(0, 3).map(p => ({
+    id: p.id,
+    name: p.title,
+    price: p.price,
+    img: p.img,
+    estoque: p.stock
+  })) : HOME_CONTENT.produtosRecomendados;
+
+  const hype = products.length > 0 ? products.slice(3, 8).map(p => ({
+    id: p.id,
+    name: p.title,
+    price: p.price,
+    img: p.img,
+    estoque: p.stock
+  })) : HOME_CONTENT.produtosHype;
 
   const handleAddToCart = (item, btnRef) => {
     const numericPrice = parseFloat(item.price.replace('.', '').replace(',', '.'));
@@ -349,7 +367,9 @@ export default function Home() {
 
            {/* Products Grid */}
            <div className="lg:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {HOME_CONTENT.produtosRecomendados.map((prod, i) => {
+              {loading ? (
+                <div className="col-span-3 text-center py-12 text-muted">Carregando produtos...</div>
+              ) : recommended.map((prod, i) => {
                 const btnRef = { current: null };
                 return (
                   <div key={i} className="bg-white p-5 rounded-2xl shadow-sm border border-border flex flex-col relative group hover:shadow-md hover:border-brand/30 transition-all">
@@ -425,7 +445,9 @@ export default function Home() {
 
         {/* HIGHLIGHT PRODUCTS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-24">
-           {HOME_CONTENT.produtosHype.map((item, i) => {
+           {loading ? (
+              <div className="col-span-5 text-center py-12 text-muted">Carregando produtos...</div>
+           ) : hype.map((item, i) => {
              const btnRef = { current: null };
              return (
                <div key={i} className="bg-white p-5 rounded-2xl shadow-sm border border-border flex flex-col relative group hover:border-brand hover:shadow-md transition-all">
