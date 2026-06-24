@@ -359,7 +359,7 @@ export default function Home() {
                            {[1,2,3,4,5].map(s => <svg key={s} className="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>)}
                         </div>
                      </div>
-                     <a href={`/produto/${encodeURIComponent(prod.name.toLowerCase().replace(/ /g, '-'))}`} className="block">
+                     <a href={`/produto/${prod.id}`} className="block">
                        <div className="h-44 w-full flex items-center justify-center mb-4 p-4">
                           <EditableImage id={`rec_${i}`} field="img" defaults={prod} className="w-full h-full" imgClassName="w-full h-full object-contain group-hover:scale-105 transition-transform" />
                        </div>
@@ -369,14 +369,9 @@ export default function Home() {
                         <div className="text-xl font-black text-[#25D366]">R$ <EditableText id={`rec_${i}`} field="price" defaults={prod} /> <span className="text-xs font-bold text-[#25D366]">no PIX</span></div>
                         <div className="text-xs text-muted mt-1">ou 10x sem juros</div>
                         {!prod.estoque && (
-                          <button
-                            ref={el => btnRef.current = el}
-                            onClick={() => handleAddToCart(prod, btnRef)}
-                            className="absolute right-0 bottom-0 w-10 h-10 rounded-full bg-brand text-white shadow-md flex items-center justify-center hover:bg-brand-hover transition-colors"
-                            aria-label="Adicionar ao carrinho"
-                          >
-                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                          </button>
+                          <a href={`/produto/${prod.id}`} className="absolute right-0 bottom-0 w-10 h-10 rounded-full bg-brand text-white shadow-md flex items-center justify-center hover:bg-brand-hover transition-colors" aria-label="Ver detalhes do produto">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                          </a>
                         )}
                      </div>
                   </div>
@@ -437,7 +432,7 @@ export default function Home() {
                    <div className="flex justify-between items-start mb-3">
                       {item.estoque ? <span className="bg-warning text-foreground text-[10px] font-bold px-2 py-1 rounded">OFERTA</span> : <div></div>}
                    </div>
-                   <a href={`/produto/${encodeURIComponent(item.name.toLowerCase().replace(/ /g, '-'))}`} className="block">
+                   <a href={`/produto/${item.id}`} className="block">
                      <div className="h-36 w-full flex items-center justify-center mb-6 p-2">
                         <EditableImage id={`hype_${i}`} field="img" defaults={item} className="w-full h-full" imgClassName="w-full h-full object-contain group-hover:scale-105 transition-transform" />
                      </div>
@@ -449,14 +444,11 @@ export default function Home() {
                       <div className="text-2xl font-black text-[#25D366]">R$ {item.price}</div>
                       <div className="text-xs font-bold text-[#25D366] mb-4 mt-0.5">no PIX ou até 12x no cartão</div>
                       
-                      <button
-                        ref={el => btnRef.current = el}
-                        onClick={() => handleAddToCart(item, btnRef)}
-                        className="w-full bg-brand text-white font-bold text-sm py-3 rounded-lg hover:bg-brand-hover transition-colors flex items-center justify-center gap-2"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                        Comprar
-                      </button>
+                      <a href={`/produto/${item.id}`} className="w-full mt-4">
+                        <button className="w-full bg-brand text-white font-bold text-sm py-3 rounded-lg hover:bg-brand-hover transition-colors flex items-center justify-center gap-2">
+                          Ver Detalhes
+                        </button>
+                      </a>
                    </div>
                 </div>
              );

@@ -31,6 +31,7 @@ export const HOME_CONTENT = {
   },
 
   produtosRecomendados: ALL_PRODUCTS.slice(0, 3).map(p => ({
+    id: p.id,
     name: p.title,
     price: p.price,
     estoque: 10,
@@ -38,6 +39,7 @@ export const HOME_CONTENT = {
   })),
 
   produtosHype: ALL_PRODUCTS.slice(3, 8).map(p => ({
+    id: p.id,
     name: p.title,
     price: p.price,
     estoque: true,
