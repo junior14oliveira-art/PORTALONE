@@ -259,10 +259,17 @@ export default function Home() {
   })) : HOME_CONTENT.produtosHype;
 
   const handleAddToCart = (item, btnRef) => {
-    const numericPrice = parseFloat(item.price.replace('.', '').replace(',', '.'));
+    let numericPrice = 0;
+    if (typeof item.price === 'string') {
+      const parsed = parseFloat(item.price.replace(/\./g, '').replace(',', '.'));
+      numericPrice = isNaN(parsed) ? 0 : parsed;
+    } else if (typeof item.price === 'number') {
+      numericPrice = item.price;
+    }
+
     addToCart({
-      id: item.id || item.name.replace(/\s+/g, '-').toLowerCase(),
-      name: item.name,
+      id: item.id || (item.name ? item.name.replace(/\s+/g, '-').toLowerCase() : 'produto'),
+      name: item.name || item.title || 'Produto',
       price: numericPrice,
       img: item.img,
     });

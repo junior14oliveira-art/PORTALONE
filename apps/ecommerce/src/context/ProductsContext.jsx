@@ -19,10 +19,25 @@ export function ProductsProvider({ children }) {
             let cat = 'computadores';
             const mod = p.modelo?.toLowerCase() || '';
             if (mod.includes('notebook')) cat = 'notebooks';
-            else if (mod.includes('monitor') || mod.includes('teclado') || mod.includes('mouse')) cat = 'acessorios';
-            else if (mod.includes('servidor')) cat = 'servidores';
+            let precoReal = parseFloat(p.preco) || 0;
 
-            const precoStr = parseFloat(p.preco) > 0 ? p.preco : "Sob Consulta";
+            // Injetar preço fake para simulações se for notebook e estiver zerado
+            if (cat === 'notebooks' && precoReal <= 0) {
+              const cpu = (p.processador || '').toLowerCase();
+              if (cpu.includes('i7')) {
+                precoReal = 4500 + Math.floor(Math.random() * 1500); // 4500 - 6000
+              } else if (cpu.includes('i5')) {
+                precoReal = 3000 + Math.floor(Math.random() * 1000); // 3000 - 4000
+              } else if (cpu.includes('i3')) {
+                precoReal = 2000 + Math.floor(Math.random() * 800);  // 2000 - 2800
+              } else {
+                precoReal = 2500 + Math.floor(Math.random() * 1000);
+              }
+            }
+
+            const precoStr = precoReal > 0 
+              ? precoReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) 
+              : "Sob Consulta";
             
             return {
               id: p.id_unico,
