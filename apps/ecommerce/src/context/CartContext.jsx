@@ -7,8 +7,9 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [items, setItems] = useState([]);
   const [isMounted, setIsMounted] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
-  // Mocking local storage persistence
+  // Load from local storage on mount
   useEffect(() => {
     setIsMounted(true);
     const saved = localStorage.getItem('@portalone:cart');
@@ -16,16 +17,18 @@ export function CartProvider({ children }) {
       try {
         setItems(JSON.parse(saved));
       } catch (e) {
-        console.error(e);
+        console.error('Failed to parse cart from local storage', e);
       }
     }
+    setInitialized(true);
   }, []);
 
+  // Save to local storage when items change, BUT ONLY after initialized
   useEffect(() => {
-    if (isMounted) {
+    if (initialized) {
       localStorage.setItem('@portalone:cart', JSON.stringify(items));
     }
-  }, [items, isMounted]);
+  }, [items, initialized]);
 
   const addToCart = (product) => {
     setItems(prev => {

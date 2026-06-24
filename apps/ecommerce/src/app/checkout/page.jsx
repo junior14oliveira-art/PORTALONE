@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useCart } from '@/context/CartContext';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
@@ -15,12 +16,6 @@ const SHIPPING_MOCK = [
   { code: 'PAC', name: 'PAC', days: '5 a 8 dias úteis', price: 38.90 },
   { code: 'SEDEX', name: 'SEDEX', days: '1 a 3 dias úteis', price: 89.50 },
   { code: 'SEDEX10', name: 'SEDEX 10', days: '1 dia útil (até 10h)', price: 145.00 },
-];
-
-const CART_ITEMS = [
-  { id: 1, name: 'Dell Latitude 5420 — i7, 16GB, SSD 512GB', price: 7499.90, qty: 1, img: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=200&auto=format&fit=crop' },
-  { id: 2, name: 'Monitor Dell P2422H — 24" Full HD', price: 1890.00, qty: 2, img: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=200&auto=format&fit=crop' },
-  { id: 3, name: 'Switch Dell S4048-ON — 48p SFP+', price: 12350.00, qty: 1, img: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=200&auto=format&fit=crop' },
 ];
 
 function formatBRL(v) { return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
@@ -205,7 +200,8 @@ function Step3({ shipping }) {
     return () => clearInterval(t);
   }, [payMethod]);
 
-  const subtotal = CART_ITEMS.reduce((s, i) => s + i.price * i.qty, 0);
+  const { items } = useCart();
+  const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
   const shippingCost = shipping ? shipping.price : 0;
   const total = subtotal + shippingCost;
 
@@ -386,7 +382,8 @@ function Step3({ shipping }) {
 
 /* -------- ORDER SIDEBAR -------- */
 function OrderSidebar({ shipping }) {
-  const subtotal = CART_ITEMS.reduce((s, i) => s + i.price * i.qty, 0);
+  const { items } = useCart();
+  const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
   const shippingCost = shipping ? shipping.price : 0;
   return (
     <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden sticky top-6">
@@ -394,7 +391,7 @@ function OrderSidebar({ shipping }) {
         <h3 className="text-white font-black">Seu Pedido</h3>
       </div>
       <div className="p-5 flex flex-col gap-4">
-        {CART_ITEMS.map(item => (
+        {items.map(item => (
           <div key={item.id} className="flex items-start justify-between gap-3 text-sm">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-muted-bg rounded-lg border border-border p-1 flex-shrink-0">
@@ -402,10 +399,10 @@ function OrderSidebar({ shipping }) {
               </div>
               <div className="flex flex-col">
                 <p className="text-foreground font-medium leading-tight line-clamp-2">{item.name}</p>
-                <span className="text-muted text-xs font-bold mt-1">Qtd: {item.qty}</span>
+                <span className="text-muted text-xs font-bold mt-1">Qtd: {item.quantity}</span>
               </div>
             </div>
-            <p className="font-bold text-foreground flex-shrink-0">{formatBRL(item.price * item.qty)}</p>
+            <p className="font-bold text-foreground flex-shrink-0">{formatBRL(item.price * item.quantity)}</p>
           </div>
         ))}
         <div className="border-t border-border pt-4 mt-2 flex flex-col gap-2">
