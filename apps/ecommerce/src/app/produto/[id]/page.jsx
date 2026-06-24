@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronRight, Heart, Share2, Star, Shield, ArrowDownUp, ShieldCheck, MapPin, Search, PlusCircle, CheckCircle, Store, RotateCcw, ImageIcon, Truck } from 'lucide-react';
 import { useState } from 'react';
+import { EditableText } from '@/components/editor/EditableText';
 
 // Variantes de demonstração para a UI do Mercado Livre
 const MOCK_VARIANTS = {
@@ -104,11 +105,11 @@ export default function ProdutoPage() {
       </div>
 
       <div className="max-w-[1200px] mx-auto px-4 py-4 text-[13px] text-[#3483fa] flex items-center gap-1">
-        <a href="/" className="hover:text-[#2968c8]">Voltar à lista</a>
+        <a href="/catalogo" className="hover:text-[#2968c8]">Voltar à lista</a>
         <span className="text-[#666] mx-2">|</span>
-        <a href="#" className="hover:text-[#2968c8] capitalize">{product.category}</a>
+        <a href={`/catalogo?categoria=${product.category}`} className="hover:text-[#2968c8] capitalize">{product.category}</a>
         <ChevronRight className="w-4 h-4 text-[#bfbfbf]" />
-        <span className="text-[#666] truncate max-w-[200px]">{product.title}</span>
+        <span className="text-[#666] truncate max-w-[200px]"><EditableText id={product.id} field="title" defaults={product} /></span>
       </div>
 
       {/* Main Content Card */}
@@ -148,19 +149,19 @@ export default function ProdutoPage() {
               <div className="border border-gray-200 rounded-lg p-4 flex gap-3 bg-[#f5f5f5]">
                 <svg className="w-6 h-6 text-[#666] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                 <div>
-                  <p className="text-[#333] mb-1">Tamanho da tela: <span className="font-semibold">14 "</span></p>
+                  <div className="text-[#333] mb-1 flex items-center gap-1">Tamanho da tela: <span className="font-semibold"><EditableText id={product.id} field="screen_size" defaults={{screen_size: "Não informado"}} /></span></div>
                 </div>
               </div>
               <div className="border border-gray-200 rounded-lg p-4 flex gap-3 bg-[#f5f5f5]">
                 <svg className="w-6 h-6 text-[#666] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>
                 <div>
-                  <p className="text-[#333] mb-1">Capacidade: <span className="font-semibold">{selections.capacidade}</span></p>
+                  <div className="text-[#333] mb-1 flex items-center gap-1">Capacidade: <span className="font-semibold"><EditableText id={product.id} field="storage_capacity" defaults={{storage_capacity: "Não informado"}} /></span></div>
                 </div>
               </div>
               <div className="border border-gray-200 rounded-lg p-4 flex gap-3 bg-[#f5f5f5]">
                 <svg className="w-6 h-6 text-[#666] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" /></svg>
                 <div>
-                  <p className="text-[#333] mb-1">Memória RAM: <span className="font-semibold">{selections.ram}</span></p>
+                  <div className="text-[#333] mb-1 flex items-center gap-1">Memória RAM: <span className="font-semibold"><EditableText id={product.id} field="ram_memory" defaults={{ram_memory: "Não informado"}} /></span></div>
                 </div>
               </div>
             </div>
@@ -171,22 +172,24 @@ export default function ProdutoPage() {
               <div className="bg-[#f5f5f5] rounded-lg border border-gray-200 overflow-hidden text-sm">
                 <div className="flex border-b border-gray-200">
                   <div className="w-1/3 bg-[#ebebeb] p-3 font-semibold text-[#333]">Marca</div>
-                  <div className="w-2/3 p-3 bg-white text-[#333]">{product.brand}</div>
+                  <div className="w-2/3 p-3 bg-white text-[#333]"><EditableText id={product.id} field="brand" defaults={product} /></div>
                 </div>
                 <div className="flex border-b border-gray-200">
                   <div className="w-1/3 bg-[#ebebeb] p-3 font-semibold text-[#333]">Processador</div>
-                  <div className="w-2/3 p-3 bg-white text-[#333]">{selections.processador}</div>
+                  <div className="w-2/3 p-3 bg-white text-[#333]"><EditableText id={product.id} field="processor" defaults={{processor: product.specs?.[0] || 'Não informado'}} /></div>
                 </div>
                 <div className="flex border-b border-gray-200">
                   <div className="w-1/3 bg-[#ebebeb] p-3 font-semibold text-[#333]">SO</div>
-                  <div className="w-2/3 p-3 bg-white text-[#333]">{selections.sistema}</div>
+                  <div className="w-2/3 p-3 bg-white text-[#333]"><EditableText id={product.id} field="os" defaults={{os: "Windows 10 Pro"}} /></div>
                 </div>
-                {product.specs.map((spec, i) => (
-                  <div key={i} className="flex border-b border-gray-200 last:border-0">
-                    <div className="w-1/3 bg-[#ebebeb] p-3 font-semibold text-[#333]">Destaque {i+1}</div>
-                    <div className="w-2/3 p-3 bg-white text-[#333]">{spec}</div>
-                  </div>
-                ))}
+                <div className="flex border-b border-gray-200">
+                  <div className="w-1/3 bg-[#ebebeb] p-3 font-semibold text-[#333]">Resolução</div>
+                  <div className="w-2/3 p-3 bg-white text-[#333]"><EditableText id={product.id} field="resolution" defaults={{resolution: "Não informada"}} /></div>
+                </div>
+                <div className="flex border-b border-gray-200">
+                  <div className="w-1/3 bg-[#ebebeb] p-3 font-semibold text-[#333]">Garantia</div>
+                  <div className="w-2/3 p-3 bg-white text-[#333]"><EditableText id={product.id} field="warranty" defaults={{warranty: "6 meses direto com a loja"}} /></div>
+                </div>
               </div>
             </div>
           </div>
@@ -321,7 +324,7 @@ export default function ProdutoPage() {
           </div>
           
           <h1 className="text-[22px] font-semibold text-[#333] leading-tight mb-2">
-            {product.title}
+            <EditableText id={product.id} field="title" defaults={product} />
           </h1>
 
           <div className="flex items-center mb-4">
@@ -342,91 +345,7 @@ export default function ProdutoPage() {
             <a href="#" className="text-sm text-[#3483fa] mt-1 inline-block hover:text-[#2968c8]">Ver os meios de pagamento</a>
           </div>
 
-          {/* Variantes (Specs selector) */}
-          <div className="flex flex-col gap-4 mb-8">
-            
-            {/* Resolucao */}
-            <div>
-              <p className="text-sm text-[#333] font-semibold mb-2">Resolução da tela: <span className="font-normal">{selections.resolucao}</span></p>
-              <div className="flex flex-wrap gap-2">
-                {MOCK_VARIANTS.resolucao.map(v => (
-                  <button 
-                    key={v}
-                    onClick={() => handleVariantChange('resolucao', v)}
-                    className={`px-3 py-2 text-sm rounded-lg border transition-all ${selections.resolucao === v ? 'border-[#3483fa] text-[#3483fa] bg-blue-50/50 font-semibold border-2' : 'border-gray-300 text-[#333] hover:border-gray-400'}`}
-                  >
-                    {v}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* RAM */}
-            <div>
-              <p className="text-sm text-[#333] font-semibold mb-2">Memória RAM: <span className="font-normal">{selections.ram}</span></p>
-              <div className="flex flex-wrap gap-2">
-                {MOCK_VARIANTS.ram.map(v => (
-                  <button 
-                    key={v}
-                    onClick={() => handleVariantChange('ram', v)}
-                    className={`px-3 py-2 text-sm rounded-lg border transition-all ${selections.ram === v ? 'border-[#3483fa] text-[#3483fa] bg-blue-50/50 font-semibold border-2' : 'border-gray-300 text-[#333] hover:border-gray-400'}`}
-                  >
-                    {v}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Capacidade */}
-            <div>
-              <p className="text-sm text-[#333] font-semibold mb-2">Capacidade: <span className="font-normal">{selections.capacidade}</span></p>
-              <div className="flex flex-wrap gap-2">
-                {MOCK_VARIANTS.capacidade.map(v => (
-                  <button 
-                    key={v}
-                    onClick={() => handleVariantChange('capacidade', v)}
-                    className={`px-3 py-2 text-sm rounded-lg border transition-all ${selections.capacidade === v ? 'border-[#3483fa] text-[#3483fa] bg-blue-50/50 font-semibold border-2' : 'border-gray-300 text-[#333] hover:border-gray-400'}`}
-                  >
-                    {v}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* SO */}
-            <div>
-              <p className="text-sm text-[#333] font-semibold mb-2">Sistema Operativo: <span className="font-normal">{selections.sistema}</span></p>
-              <div className="flex flex-wrap gap-2">
-                {MOCK_VARIANTS.sistema.map(v => (
-                  <button 
-                    key={v}
-                    onClick={() => handleVariantChange('sistema', v)}
-                    className={`px-3 py-2 text-sm rounded-lg border transition-all ${selections.sistema === v ? 'border-[#3483fa] text-[#3483fa] bg-blue-50/50 font-semibold border-2' : 'border-gray-300 text-[#333] hover:border-gray-400'}`}
-                  >
-                    {v}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Cor */}
-            <div>
-              <p className="text-sm text-[#333] font-semibold mb-2">Cor: <span className="font-normal">{selections.cor}</span></p>
-              <div className="flex flex-wrap gap-2">
-                {MOCK_VARIANTS.cor.map(v => (
-                  <button 
-                    key={v}
-                    onClick={() => handleVariantChange('cor', v)}
-                    className={`px-4 py-2 text-sm rounded-lg border transition-all flex items-center gap-2 ${selections.cor === v ? 'border-[#3483fa] text-[#3483fa] bg-blue-50/50 font-semibold border-2' : 'border-gray-300 text-[#333] hover:border-gray-400'}`}
-                  >
-                    <div className="w-4 h-4 rounded-full border border-gray-200" style={{ backgroundColor: v === 'Prateado' ? '#e5e7eb' : v === 'Cinza' ? '#6b7280' : '#1f2937' }}></div>
-                    {v}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-          </div>
+          {/* Variantes (Specs selector) - Removed as characteristics are now handled by Editable fields */}
 
           <div className="border border-gray-200 rounded-lg p-5">
             {/* Entrega Info */}
