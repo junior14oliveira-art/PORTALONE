@@ -452,35 +452,59 @@ export default function ProdutosPage() {
       console.log('Sync API Response:', data);
 
       if (data && data.success && data.produtos) {
-        // Find products that are not yet imported
-        const newProducts = [];
-        data.produtos.forEach(p => {
-          // Check if SKU (id_unico) already exists
-          const exists = products.find(existing => existing.sku === p.id_unico);
-          if (!exists) {
-            newProducts.push({
-              id: p.id_unico,
-              name: p.nome_exibicao || p.modelo || 'Produto sem nome',
-              sku: p.id_unico,
-              category: 'Computadores', // default
-              price: parseFloat(p.preco) || parseFloat(p.preco_venda) || 0,
-              pricePromo: '',
-              stock: parseInt(p.quantidade_disponivel) || parseInt(p.quantidade_estoque) || 0,
-              description: `Marca: ${p.marca || 'N/A'} | Processador: ${p.processador || 'N/A'}`,
-              image: '',
-              status: 'Ativo' // Adds as Ativo automatically
-            });
-          }
-        });
-        if (newProducts.length > 0) {
-          setProducts(prev => {
-            const updated = [...prev, ...newProducts];
-            console.log('Updated products length:', updated.length);
-            return updated;
+        let updatedCount = 0;
+        let newCount = 0;
+
+        setProducts(prev => {
+          const nextProducts = [...prev];
+
+          data.produtos.forEach(p => {
+            const apiSku = p.id_unico;
+            const apiPrice = parseFloat(p.preco) || parseFloat(p.preco_venda) || 0;
+            const apiStock = parseInt(p.quantidade_disponivel) || parseInt(p.quantidade_estoque) || 0;
+
+            // Check if SKU (id_unico) already exists in our table
+            const existingIndex = nextProducts.findIndex(existing => existing.sku === apiSku);
+
+            if (existingIndex >= 0) {
+              // Produto existe: Atualizar Preço e Estoque automaticamente conforme regra de integração
+              if (nextProducts[existingIndex].price !== apiPrice || nextProducts[existingIndex].stock !== apiStock) {
+                nextProducts[existingIndex] = {
+                  ...nextProducts[existingIndex],
+                  price: apiPrice,
+                  stock: apiStock
+                };
+                updatedCount++;
+              }
+            } else {
+              // Produto novo: Criar cadastro inicial
+              nextProducts.push({
+                id: apiSku, // Usa o SKU como ID base para novos
+                name: p.nome_exibicao || p.modelo || 'Produto sem nome',
+                sku: apiSku,
+                category: 'Computadores', // Categoria padrão (requer ajuste manual depois)
+                price: apiPrice,
+                pricePromo: '',
+                stock: apiStock,
+                description: `Marca: ${p.marca || 'N/A'} | Processador: ${p.processador || 'N/A'}`,
+                image: '',
+                ram: '',
+                storage: '',
+                screen: '',
+                resolution: '',
+                status: 'Ativo' // Adds as Ativo automatically
+              });
+              newCount++;
+            }
           });
-          setToast(`${newProducts.length} produtos importados automaticamente do estoque!`);
+
+          return nextProducts;
+        });
+
+        if (newCount > 0 || updatedCount > 0) {
+          setToast(`${newCount} novos importados, ${updatedCount} anúncios atualizados via API!`);
         } else {
-          setToast('Estoque já está sincronizado.');
+          setToast('O estoque já está 100% sincronizado com a API.');
         }
       } else {
         console.error('Invalid API data format:', data);
