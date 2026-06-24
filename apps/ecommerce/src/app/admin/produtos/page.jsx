@@ -89,6 +89,10 @@ const EMPTY_FORM = {
   stock: '',
   description: '',
   image: '',
+  ram: '',
+  storage: '',
+  screen: '',
+  resolution: '',
   status: 'Ativo',
 };
 
@@ -152,6 +156,10 @@ function ProductModal({ product, models, onSave, onClose }) {
         image: model.image || '',
         price: model.price || '',
         description: model.description || '',
+        ram: model.ram || '',
+        storage: model.storage || '',
+        screen: model.screen || '',
+        resolution: model.resolution || '',
       }));
     }
   };
@@ -307,6 +315,53 @@ function ProductModal({ product, models, onSave, onClose }) {
                 placeholder="https://..."
                 className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0052B4]/30 focus:border-[#0052B4]"
               />
+            </div>
+
+            {/* Características (Nielsen Heuristics) */}
+            <div className="sm:col-span-2 mt-2">
+              <h4 className="text-sm font-bold text-gray-900 border-b border-gray-100 pb-2 mb-4">Características de Venda</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Memória RAM</label>
+                  <input
+                    name="ram"
+                    value={form.ram}
+                    onChange={handleChange}
+                    placeholder="Ex: 16GB DDR4"
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0052B4]/30 focus:border-[#0052B4]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Armazenamento</label>
+                  <input
+                    name="storage"
+                    value={form.storage}
+                    onChange={handleChange}
+                    placeholder="Ex: 512GB SSD NVMe"
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0052B4]/30 focus:border-[#0052B4]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Tamanho da Tela</label>
+                  <input
+                    name="screen"
+                    value={form.screen}
+                    onChange={handleChange}
+                    placeholder="Ex: 14 Polegadas"
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0052B4]/30 focus:border-[#0052B4]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Resolução</label>
+                  <input
+                    name="resolution"
+                    value={form.resolution}
+                    onChange={handleChange}
+                    placeholder="Ex: Full HD (1920x1080)"
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#0052B4]/30 focus:border-[#0052B4]"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Descrição */}
